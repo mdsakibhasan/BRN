@@ -8,7 +8,8 @@ import {
   Code2, 
   MapPin, 
   Clock, 
-  Plus
+  Plus,
+  Apple
 } from 'lucide-react';
 import { Language } from '../types';
 
@@ -22,6 +23,7 @@ interface HeaderProps {
   viewMode: 'mobile' | 'web';
   onToggleViewMode: (mode: 'mobile' | 'web') => void;
   onOpenFlutterCode: () => void;
+  onOpenIPhoneInstall: () => void;
   selectedZone: string;
 }
 
@@ -35,6 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
   viewMode,
   onToggleViewMode,
   onOpenFlutterCode,
+  onOpenIPhoneInstall,
   selectedZone
 }) => {
   const isBn = language === 'bn';
@@ -141,6 +144,20 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Code2 className="w-3.5 h-3.5 text-sky-400" />
             <span className="hidden sm:inline">{isBn ? 'Flutter কোড' : 'Flutter Code'}</span>
+          </button>
+
+          {/* iPhone / iOS Install Button */}
+          <button
+            id="open-iphone-install-btn"
+            onClick={onOpenIPhoneInstall}
+            className="flex items-center gap-1.5 bg-gradient-to-r from-stone-800 to-stone-850 hover:from-stone-750 hover:to-stone-800 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm hover:shadow-amber-500/10 cursor-pointer"
+            title="Install and Run App on iPhone"
+          >
+            <Apple className="w-3.5 h-3.5 fill-current text-white" />
+            <span className="flex items-center gap-1">
+              <span>{isBn ? 'iPhone-এ ইনস্টল' : 'iPhone App'}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping hidden sm:inline-block" />
+            </span>
           </button>
 
           {/* Wallet Balance Button (Recharge via bKash / Nagad) */}

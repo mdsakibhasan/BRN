@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "Order": {
+      "title": "Order",
+      "description": "A hot ruti delivery order in Mirpur 11 or 12.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique order ID"
+        },
+        "customerPhone": {
+          "type": "string",
+          "description": "Customer phone number"
+        },
+        "customerAddress": {
+          "type": "string",
+          "description": "Delivery address"
+        },
+        "zone": {
+          "type": "string",
+          "description": "Delivery zone (e.g. Mirpur 11, Mirpur 12)"
+        },
+        "items": {
+          "type": "string",
+          "description": "Serialized items list"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "Total price in BDT"
+        },
+        "status": {
+          "type": "string",
+          "description": "Order status",
+          "enum": ["baking", "casserole_packed", "rider_assigned", "delivered"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of creation"
+        }
+      },
+      "required": ["id", "customerPhone", "customerAddress", "totalAmount", "status", "createdAt"]
+    },
+    "Wallet": {
+      "title": "Wallet",
+      "description": "User in-app wallet balance and recharges.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "User identifier or phone"
+        },
+        "balance": {
+          "type": "number",
+          "description": "Current wallet balance in BDT"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["userId", "balance", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of hot ruti orders"
+    },
+    "/wallets/{walletId}": {
+      "schema": "Wallet",
+      "description": "Collection of user wallet accounts"
+    }
+  }
+}
