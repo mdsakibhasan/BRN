@@ -1,0 +1,74 @@
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+    <defs>
+      <linearGradient id="bg_fam" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fffbeb"/>
+        <stop offset="50%" stop-color="#fef3c7"/>
+        <stop offset="100%" stop-color="#fde68a"/>
+      </linearGradient>
+    </defs>
+
+    <rect width="800" height="500" fill="url(#bg_fam)"/>
+
+    <!-- Header Ribbon like PDF Page 1 -->
+    <rect x="0" y="0" width="800" height="75" fill="#78350f"/>
+    <rect x="0" y="70" width="800" height="5" fill="#f59e0b"/>
+    <text x="35" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" fill="#fef3c7">
+      ঝামেলাহীন সন্ধ্যা-সকাল • Bangla Roti Network
+    </text>
+    <text x="35" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#fde68a">
+      "মায়ের গান, মায়ের ভালোবাসা" • গৃহিণীর নির্ঝঞ্ঝাট সকাল
+    </text>
+
+    <!-- Warm Breakfast Illustration with Family Table -->
+    <g transform="translate(420, 270)">
+      <!-- Dining Table -->
+      <ellipse cx="0" cy="50" rx="280" ry="80" fill="#92400e" stroke="#78350f" stroke-width="4"/>
+      
+      <!-- Hot Fresh Rotis in Center Table -->
+      <circle cx="0" cy="30" r="60" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>
+      <ellipse cx="-10" cy="20" rx="10" ry="5" fill="#854d0e" opacity="0.6"/>
+
+      <!-- Dal Bowls on sides -->
+      <circle cx="-120" cy="40" r="35" fill="#eab308" stroke="#ca8a04" stroke-width="3"/>
+      <circle cx="120" cy="40" r="35" fill="#eab308" stroke="#ca8a04" stroke-width="3"/>
+
+      <!-- Steam rising -->
+      <path d="M -10 0 Q -5 -20 -15 -40" stroke="#ca8a04" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+      <path d="M 10 0 Q 15 -20 5 -40" stroke="#ca8a04" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+    </g>
+
+    <!-- Left Heartwarming Card (from PDF) -->
+    <g transform="translate(35, 100)">
+      <rect width="280" height="360" rx="16" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+      <rect width="280" height="42" rx="16" fill="#b45309"/>
+      <rect x="0" y="24" width="280" height="18" fill="#b45309"/>
+      <text x="140" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="900" fill="#ffffff">
+        সকাল সন্ধ্যার ঝামেলা আর না!
+      </text>
+
+      <text x="20" y="75" font-size="13" font-weight="bold" fill="#78350f">আমাদের বার্তা:</text>
+      <text x="20" y="102" font-size="12" fill="#4b5563">"ঘরে আটা মাখানো, বেলা ও চুলার পাশে দাঁড়িয়ে</text>
+      <text x="20" y="122" font-size="12" fill="#4b5563">রুটি ভাজার কষ্ট এখন অতীত।"</text>
+
+      <g transform="translate(20, 145)">
+        <rect width="240" height="65" rx="8" fill="#fef3c7"/>
+        <text x="12" y="24" font-size="12" font-weight="bold" fill="#78350f">❤️ গৃহিণীর স্বস্তি ফিরিয়ে আনুন</text>
+        <text x="12" y="44" font-size="11" fill="#92400e">অফিস বা স্কুলের তাড়ার মাঝে ধোঁয়া ওঠা গরম রুটি</text>
+      </g>
+
+      <g transform="translate(20, 225)">
+        <rect width="240" height="65" rx="8" fill="#fef3c7"/>
+        <text x="12" y="24" font-size="12" font-weight="bold" fill="#78350f">🌿 নিরাপদ ও স্বাস্থ্যসম্মত খাদ্য</text>
+        <text x="12" y="44" font-size="11" fill="#92400e">শতভাগ ভেজালমুক্ত উপাদান ও নিজস্ব ডেলিভারি</text>
+      </g>
+
+      <g transform="translate(20, 305)">
+        <rect width="240" height="36" rx="8" fill="#15803d"/>
+        <text x="120" y="23" text-anchor="middle" font-size="13" font-weight="900" fill="#ffffff">
+          নিরাপদ খাদ্য, সুস্থ জীবন
+        </text>
+      </g>
+    </g>
+  </svg>
+  

@@ -15,6 +15,20 @@ export interface MenuItem {
   isVegetarian?: boolean;
   badge?: string;
   calories?: string;
+  image?: string;
+  taglineBn?: string;
+  ingredientsBn?: string[];
+  featuresBn?: string[];
+  nutritionFacts?: {
+    energy?: string;
+    carbs?: string;
+    protein?: string;
+    fat?: string;
+    fiber?: string;
+    sodium?: string;
+  };
+  isCustom?: boolean;
+  isEdited?: boolean;
 }
 
 export interface CartItem {

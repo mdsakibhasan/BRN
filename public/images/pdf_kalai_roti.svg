@@ -1,0 +1,84 @@
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+    <defs>
+      <linearGradient id="bg_kalai" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fffbeb"/>
+        <stop offset="50%" stop-color="#fef3c7"/>
+        <stop offset="100%" stop-color="#fde68a"/>
+      </linearGradient>
+      <radialGradient id="kalai_plate" cx="50%" cy="50%" r="50%">
+        <stop offset="70%" stop-color="#78350f"/>
+        <stop offset="100%" stop-color="#451a03"/>
+      </radialGradient>
+      <radialGradient id="kalai_face" cx="45%" cy="45%" r="55%">
+        <stop offset="0%" stop-color="#e7e5e4"/>
+        <stop offset="40%" stop-color="#d6d3d1"/>
+        <stop offset="75%" stop-color="#a8a29e"/>
+        <stop offset="100%" stop-color="#78716c"/>
+      </radialGradient>
+    </defs>
+
+    <rect width="800" height="500" fill="url(#bg_kalai)"/>
+
+    <!-- Header Banner like PDF Page 1 -->
+    <rect x="0" y="0" width="800" height="75" fill="#78350f"/>
+    <rect x="0" y="70" width="800" height="5" fill="#d97706"/>
+    <text x="35" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" fill="#ffffff">
+      Spice Kalai Roti • চাঁপাইনবাবগঞ্জের ঐতিহ্যবাহী কলাই রুটি
+    </text>
+    <text x="35" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#fde68a">
+      "২৫% প্রাকৃতিক প্রোটিন সমৃদ্ধ" • নরম, সুস্বাদু ও পুষ্টিকর
+    </text>
+    <text x="765" y="46" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="900" fill="#fde047">
+      ৳১৫ / পিস
+    </text>
+
+    <!-- Center Kalai Roti on Terracotta plate -->
+    <g transform="translate(500, 270)">
+      <circle r="165" fill="url(#kalai_plate)"/>
+      <circle r="130" fill="url(#kalai_face)"/>
+
+      <!-- Charred / Roasted Marks characteristic of Kalai Roti -->
+      <ellipse cx="-35" cy="-25" rx="14" ry="8" fill="#292524" opacity="0.75"/>
+      <ellipse cx="25" cy="-40" rx="18" ry="11" fill="#1c1917" opacity="0.8"/>
+      <ellipse cx="-10" cy="35" rx="22" ry="10" fill="#292524" opacity="0.75"/>
+      <ellipse cx="45" cy="15" rx="16" ry="9" fill="#1c1917" opacity="0.7"/>
+
+      <!-- Red Chili and Bhorta illustration on side -->
+      <g transform="translate(-130, 90)">
+        <ellipse rx="30" ry="20" fill="#991b1b"/>
+        <path d="M -15 0 Q 0 -15 20 -5" stroke="#15803d" stroke-width="4" fill="none"/>
+      </g>
+    </g>
+
+    <!-- Left Details Card (from PDF) -->
+    <g transform="translate(35, 100)">
+      <rect width="280" height="360" rx="16" fill="#ffffff" stroke="#78350f" stroke-width="2"/>
+      <rect width="280" height="42" rx="16" fill="#78350f"/>
+      <rect x="0" y="24" width="280" height="18" fill="#78350f"/>
+      <text x="140" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="900" fill="#ffffff">
+        ঐতিহ্য ও পুষ্টিগুণ
+      </text>
+
+      <text x="20" y="70" font-size="12" font-weight="bold" fill="#78350f">মূল উপাদানসমূহ:</text>
+      <text x="20" y="94" font-size="12" fill="#1f2937">• আসল মাষকলাইয়ের ডালের আটা</text>
+      <text x="20" y="116" font-size="12" fill="#1f2937">• আতপ চালের আটা ও বিশুদ্ধ পানি</text>
+      <text x="20" y="138" font-size="12" fill="#1f2937">• বিশেষ তাওয়ার ভাজা সুগন্ধি পোড়া ভাব</text>
+
+      <line x1="20" y1="160" x2="260" y2="160" stroke="#fef3c7" stroke-width="2"/>
+
+      <g transform="translate(20, 175)">
+        <rect width="240" height="60" rx="8" fill="#fef3c7"/>
+        <text x="12" y="26" font-size="13" font-weight="900" fill="#78350f">২৫% প্রাকৃতিক উদ্ভিজ্জ প্রোটিন</text>
+        <text x="12" y="46" font-size="11" fill="#92400e">হৃদরোগ ও কোলেস্টেরল নিয়ন্ত্রণে সহায়ক</text>
+      </g>
+
+      <g transform="translate(20, 248)">
+        <rect width="240" height="90" rx="8" fill="#fafaf9"/>
+        <text x="12" y="22" font-size="12" font-weight="bold" fill="#1c1917">খাওয়ার পরামর্শ:</text>
+        <text x="12" y="44" font-size="11" fill="#44403c">মরিচ বাটা, রসুন-পেঁয়াজ ভর্তা, বেগুন ভর্তা</text>
+        <text x="12" y="64" font-size="11" fill="#44403c">কিংবা হাঁসের মাংস দিয়ে খাওয়ার অতুলনীয় স্বাদ!</text>
+      </g>
+    </g>
+  </svg>
+  

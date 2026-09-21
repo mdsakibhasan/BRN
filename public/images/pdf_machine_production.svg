@@ -1,0 +1,70 @@
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+    <defs>
+      <linearGradient id="bg_mach" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0f172a"/>
+        <stop offset="50%" stop-color="#1e293b"/>
+        <stop offset="100%" stop-color="#020617"/>
+      </linearGradient>
+      <linearGradient id="steel" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#f1f5f9"/>
+        <stop offset="40%" stop-color="#cbd5e1"/>
+        <stop offset="70%" stop-color="#94a3b8"/>
+        <stop offset="100%" stop-color="#64748b"/>
+      </linearGradient>
+    </defs>
+
+    <rect width="800" height="500" fill="url(#bg_mach)"/>
+
+    <!-- Header Ribbon like PDF Page 1 -->
+    <rect x="0" y="0" width="800" height="75" fill="#0284c7"/>
+    <rect x="0" y="70" width="800" height="5" fill="#38bdf8"/>
+    <text x="35" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" fill="#ffffff">
+      স্বয়ংক্রিয় মেশিনে তাজা রুটি উৎপাদন
+    </text>
+    <text x="35" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#e0f2fe">
+      "স্বাস্থ্যসম্মত খাদ্য প্রস্তুত করি, জনস্বাস্থ্যে অবদান রাখি"
+    </text>
+
+    <!-- Industrial Automatic Roti Maker Illustration (like PDF photo) -->
+    <g transform="translate(100, 110)">
+      <!-- Main Steel Body -->
+      <rect x="150" y="60" width="380" height="220" rx="12" fill="url(#steel)" stroke="#475569" stroke-width="4"/>
+      
+      <!-- Top Dough Hopper / Feeder -->
+      <polygon points="170,60 210,0 270,0 310,60" fill="#94a3b8" stroke="#334155" stroke-width="3"/>
+      
+      <!-- Conveyor Belt Assembly -->
+      <rect x="60" y="240" width="560" height="40" rx="8" fill="#1e293b" stroke="#64748b" stroke-width="3"/>
+      <circle cx="80" cy="260" r="14" fill="#64748b"/>
+      <circle cx="600" cy="260" r="14" fill="#64748b"/>
+
+      <!-- Rotis moving along conveyor belt -->
+      <ellipse cx="140" cy="235" rx="35" ry="12" fill="#fef08a"/>
+      <ellipse cx="280" cy="235" rx="36" ry="12" fill="#fde047"/>
+      <ellipse cx="420" cy="235" rx="36" ry="12" fill="#eab308"/>
+      <ellipse cx="540" cy="235" rx="36" ry="12" fill="#ca8a04"/>
+
+      <!-- Digital Control Display / Touchpad -->
+      <rect x="360" y="90" width="130" height="80" rx="6" fill="#020617" stroke="#0ea5e9" stroke-width="2"/>
+      <text x="425" y="125" text-anchor="middle" font-family="monospace" font-size="18" font-weight="900" fill="#38bdf8">220°C</text>
+      <text x="425" y="150" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#4ade80">TOUCHLESS</text>
+
+      <!-- Machine Legs -->
+      <rect x="170" y="280" width="30" height="80" fill="#475569"/>
+      <rect x="480" y="280" width="30" height="80" fill="#475569"/>
+    </g>
+
+    <!-- Bottom Features (Exact from PDF Page 2) -->
+    <g transform="translate(40, 430)">
+      <rect x="0" y="0" width="225" height="45" rx="8" fill="#0369a1"/>
+      <text x="112" y="28" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">✓ ১০০% স্পর্শহীন স্বাস্থ্যসম্মত</text>
+
+      <rect x="245" y="0" width="230" height="45" rx="8" fill="#075985"/>
+      <text x="360" y="28" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">✓ আধুনিক হিট ও প্রেস প্রযুক্তি</text>
+
+      <rect x="495" y="0" width="225" height="45" rx="8" fill="#0c4a6e"/>
+      <text x="607" y="28" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">✓ প্রতি ব্যাচে নিখুঁত ফুলকো রুটি</text>
+    </g>
+  </svg>
+  

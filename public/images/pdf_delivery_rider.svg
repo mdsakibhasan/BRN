@@ -1,0 +1,82 @@
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+    <defs>
+      <linearGradient id="bg_rider" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#064e3b"/>
+        <stop offset="50%" stop-color="#065f46"/>
+        <stop offset="100%" stop-color="#022c22"/>
+      </linearGradient>
+    </defs>
+
+    <rect width="800" height="500" fill="url(#bg_rider)"/>
+
+    <!-- Top Banner Ribbon like PDF Page 2 -->
+    <rect x="0" y="0" width="800" height="75" fill="#047857"/>
+    <rect x="0" y="70" width="800" height="5" fill="#34d399"/>
+    <text x="35" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" fill="#ffffff">
+      Own Rider Routing System
+    </text>
+    <text x="35" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#a7f3d0">
+      "নিজস্ব ডেলিভারি কর্মী ও পথ নির্দেশক/নির্ধারণ ব্যবস্থা" • Max 2 Km
+    </text>
+    <text x="765" y="46" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="900" fill="#facc15">
+      ১৫ মিনিট এক্সপ্রেস
+    </text>
+
+    <!-- Green Delivery Scooter & Rider with Thermal Delivery Box (like PDF photo) -->
+    <g transform="translate(420, 290)">
+      <!-- Road -->
+      <line x1="-200" y1="110" x2="250" y2="110" stroke="#34d399" stroke-width="4"/>
+
+      <!-- Scooter Wheels -->
+      <circle cx="-100" cy="80" r="35" fill="#1f2937" stroke="#e5e7eb" stroke-width="6"/>
+      <circle cx="120" cy="80" r="35" fill="#1f2937" stroke="#e5e7eb" stroke-width="6"/>
+
+      <!-- Scooter Green Body -->
+      <path d="M -90 60 L -40 60 L 0 30 L 70 30 L 110 50" stroke="#16a34a" stroke-width="24" fill="none" stroke-linecap="round"/>
+      <path d="M 70 30 L 90 -20 L 75 -25" stroke="#15803d" stroke-width="8" fill="none"/>
+
+      <!-- Bangla Roti Network Insulated Thermal Box on Rear Rack -->
+      <rect x="-140" y="-40" width="90" height="85" rx="8" fill="#15803d" stroke="#facc15" stroke-width="3"/>
+      <text x="-95" y="-15" text-anchor="middle" font-size="11" font-weight="900" fill="#ffffff">Bangla Roti</text>
+      <text x="-95" y="0" text-anchor="middle" font-size="10" font-weight="bold" fill="#facc15">Network</text>
+      <text x="-95" y="25" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">HOT BOX ♨</text>
+
+      <!-- Rider in Green Delivery Jacket & Helmet -->
+      <!-- Body -->
+      <ellipse cx="-10" cy="-20" rx="30" ry="45" fill="#16a34a"/>
+      <!-- Helmet -->
+      <circle cx="-10" cy="-85" r="24" fill="#047857" stroke="#34d399" stroke-width="3"/>
+      <rect x="-6" y="-85" width="22" height="12" rx="4" fill="#0f172a"/>
+    </g>
+
+    <!-- Left Info Card (from PDF Page 2) -->
+    <g transform="translate(35, 100)">
+      <rect width="280" height="360" rx="16" fill="#064e3b" stroke="#059669" stroke-width="2"/>
+      <rect width="280" height="42" rx="16" fill="#047857"/>
+      <rect x="0" y="24" width="280" height="18" fill="#047857"/>
+      <text x="140" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="900" fill="#ffffff">
+        এলাকাভিত্তিক ডেলিভারি পরিষেবা
+      </text>
+
+      <text x="20" y="70" font-size="13" font-weight="bold" fill="#facc15">বর্তমান সেবা অঞ্চল:</text>
+      <text x="20" y="96" font-size="13" fill="#ffffff">📍 পল্লবী (Pallabi)</text>
+      <text x="20" y="122" font-size="13" fill="#ffffff">📍 মিরপুর DOHS</text>
+      <text x="20" y="148" font-size="13" fill="#ffffff">📍 মিরপুর-১১</text>
+      <text x="20" y="174" font-size="13" fill="#ffffff">📍 মিরপুর-১২</text>
+
+      <line x1="20" y1="200" x2="260" y2="200" stroke="#047857" stroke-width="2"/>
+
+      <text x="20" y="225" font-size="13" font-weight="bold" fill="#facc15">ডেলিভারির সময়সূচি:</text>
+      <text x="20" y="250" font-size="12" fill="#d1fae5">🌅 সকাল: ৭:০০ টা - ১১:০০ টা</text>
+      <text x="20" y="275" font-size="12" fill="#d1fae5">🌆 সন্ধ্যা: ৫:৩০ টা - ৯:৩০ টা</text>
+
+      <g transform="translate(20, 305)">
+        <rect width="240" height="36" rx="8" fill="#facc15"/>
+        <text x="120" y="23" text-anchor="middle" font-size="13" font-weight="900" fill="#064e3b">
+          হটলাইন: 01329593540
+        </text>
+      </g>
+    </g>
+  </svg>
+  

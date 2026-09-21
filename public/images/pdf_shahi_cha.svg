@@ -1,0 +1,53 @@
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+    <defs>
+      <linearGradient id="bg_cha" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#451a03"/>
+        <stop offset="50%" stop-color="#78350f"/>
+        <stop offset="100%" stop-color="#291102"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="500" fill="url(#bg_cha)"/>
+    <rect x="0" y="0" width="800" height="75" fill="#291102"/>
+    <rect x="0" y="70" width="800" height="5" fill="#d97706"/>
+    <text x="35" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" fill="#fde68a">
+      শাহী জাফরানি মালাই চা • Shahi Malai Cha
+    </text>
+    <text x="35" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#fed7aa">
+      ঘন দুধ, জাফরান ও এলাচের সুবাসিত চা
+    </text>
+    <text x="765" y="46" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="900" fill="#facc15">
+      ৳২৫ / কাপ
+    </text>
+
+    <!-- Clay Matka / Cup with Malai -->
+    <g transform="translate(500, 270)">
+      <!-- Saucer -->
+      <ellipse cx="0" cy="120" rx="140" ry="40" fill="#78350f" stroke="#451a03" stroke-width="4"/>
+      <!-- Earthen Cup (Matka) -->
+      <path d="M -70 110 L -90 -20 L 90 -20 L 70 110 Z" fill="#92400e" stroke="#451a03" stroke-width="4"/>
+      <!-- Tea surface with Malai -->
+      <ellipse cx="0" cy="-20" rx="90" ry="30" fill="#b45309"/>
+      <ellipse cx="0" cy="-20" rx="70" ry="20" fill="#fef08a" opacity="0.8"/>
+      <!-- Steam -->
+      <path d="M -20 -40 Q -10 -70 -25 -100" stroke="#fef3c7" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+      <path d="M 20 -40 Q 30 -70 15 -100" stroke="#fef3c7" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+    </g>
+
+    <!-- Left Details -->
+    <g transform="translate(35, 100)">
+      <rect width="280" height="360" rx="16" fill="#291102" stroke="#92400e" stroke-width="2"/>
+      <rect width="280" height="42" rx="16" fill="#92400e"/>
+      <rect x="0" y="24" width="280" height="18" fill="#92400e"/>
+      <text x="140" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="900" fill="#ffffff">
+        আসল মাটির কাপের স্বাদ
+      </text>
+
+      <text x="20" y="75" font-size="13" font-weight="bold" fill="#facc15">উপকরণ ও বৈশিষ্ট্য:</text>
+      <text x="20" y="105" font-size="12" fill="#e5e7eb">✓ খাঁটি জ্বাল দেওয়া ঘন গরুর দুধ</text>
+      <text x="20" y="130" font-size="12" fill="#e5e7eb">✓ সুগন্ধি জাফরান ও সবুজ এলাচ</text>
+      <text x="20" y="155" font-size="12" fill="#e5e7eb">✓ উপরে খাঁটি দুধের ঘন সরের মালাই</text>
+      <text x="20" y="180" font-size="12" fill="#e5e7eb">✓ থার্মাল কাপে ধোঁয়া ওঠা গরম পরিবেশন</text>
+    </g>
+  </svg>
+  

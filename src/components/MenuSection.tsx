@@ -1,23 +1,31 @@
 import React, { useState } from 'react';
-import { Flame, Plus, Minus, Check, Clock, Sparkles } from 'lucide-react';
+import { Flame, Plus, Minus, Check, Clock, Sparkles, Camera } from 'lucide-react';
 import { MenuItem, CartItem, Language } from '../types';
 import { MENU_ITEMS } from '../data/menu';
 
 interface MenuSectionProps {
   language: Language;
   cart: CartItem[];
+  items?: MenuItem[];
   onAddToCart: (item: MenuItem) => void;
   onUpdateQuantity: (itemId: string, delta: number) => void;
+  onOpenDetails?: (item: MenuItem) => void;
+  onOpenImageUploader?: (itemId: string) => void;
 }
 
 export const MenuSection: React.FC<MenuSectionProps> = ({
   language,
   cart,
+  items,
   onAddToCart,
-  onUpdateQuantity
+  onUpdateQuantity,
+  onOpenDetails,
+  onOpenImageUploader
 }) => {
   const isBn = language === 'bn';
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  const allItems = items || MENU_ITEMS;
 
   const categories = [
     { id: 'all', nameBn: 'সব আইটেম', nameEn: 'All Items' },
@@ -29,8 +37,8 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   ];
 
   const filteredItems = selectedCategory === 'all'
-    ? MENU_ITEMS
-    : MENU_ITEMS.filter(item => item.category === selectedCategory);
+    ? allItems
+    : allItems.filter(item => item.category === selectedCategory);
 
   const getItemQuantity = (id: string): number => {
     const found = cart.find(ci => ci.item.id === id);
@@ -67,11 +75,42 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
               key={item.id}
               className="bg-white rounded-3xl p-5 border border-stone-200/80 hover:border-amber-400/80 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group relative overflow-hidden"
             >
-              {/* Top highlights */}
+              {/* Image & Top highlights */}
               <div>
+                {item.image && (
+                  <div className="w-full h-36 rounded-2xl overflow-hidden mb-3 bg-stone-100 relative group/img">
+                    <img 
+                      src={item.image} 
+                      alt={item.nameBn} 
+                      referrerPolicy="no-referrer"
+                      onClick={() => onOpenDetails?.(item)}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                    />
+                    {item.badge && (
+                      <span className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500 text-stone-950 shadow-md pointer-events-none">
+                        {item.badge}
+                      </span>
+                    )}
+
+                    {onOpenImageUploader && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onOpenImageUploader(item.id);
+                        }}
+                        className="absolute bottom-2 right-2 bg-stone-900/80 hover:bg-stone-900 text-stone-200 hover:text-white px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 backdrop-blur-md opacity-0 group-hover/img:opacity-100 transition-opacity cursor-pointer shadow-md"
+                        title="PDF থেকে ছবি পরিবর্তন করুন"
+                      >
+                        <Camera className="w-3 h-3 text-amber-400" />
+                        <span>PDF ছবি</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div className="flex flex-wrap gap-1.5 items-center">
-                    {item.badge && (
+                    {!item.image && item.badge && (
                       <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300/60">
                         {item.badge}
                       </span>
@@ -92,9 +131,28 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                 <h3 className="text-base sm:text-lg font-black text-stone-900 leading-snug group-hover:text-amber-700 transition-colors">
                   {isBn ? item.nameBn : item.nameEn}
                 </h3>
+                {item.taglineBn && (
+                  <p className="text-xs font-semibold text-amber-600 mt-0.5">
+                    {item.taglineBn}
+                  </p>
+                )}
                 <p className="text-stone-500 text-xs sm:text-sm mt-1.5 line-clamp-2 leading-relaxed">
                   {isBn ? item.descriptionBn : item.descriptionEn}
                 </p>
+
+                {/* Ingredients Pills */}
+                {item.ingredientsBn && item.ingredientsBn.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2.5">
+                    {item.ingredientsBn.slice(0, 3).map((ing, i) => (
+                      <span key={i} className="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-md">
+                        {ing}
+                      </span>
+                    ))}
+                    {item.ingredientsBn.length > 3 && (
+                      <span className="text-[10px] text-stone-400">+{item.ingredientsBn.length - 3}টি</span>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Price & Action button */}

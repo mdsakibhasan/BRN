@@ -1,28 +1,179 @@
 import { MenuItem, MirpurLocation } from '../types';
 
+export const BRN_BRAND_INFO = {
+  nameBn: 'বাংলা রুটি নেটওয়ার্ক',
+  nameEn: 'Bangla Roti Network (BRN)',
+  sloganBn: '"তাৎক্ষণিক-খাওয়ার-উপযোগী" আটার রুটি উৎপাদন ও ডেলিভারি নেটওয়ার্ক',
+  mottoBn: '“স্বাস্থ্যসম্মত খাদ্য প্রস্তুত করি, জনস্বাস্থ্যে অবদান রাখি”',
+  addressBn: 'হাউজ- ২০৫, রোড- ১৬, ব্লক- বি, সেকশন-১২, পল্লবী, ঢাকা-১২১৬',
+  unitBn: 'পল্লবী মেইন ব্রাঞ্চ ও সেন্ট্রাল কিচেন ইউনিট',
+  hotline: '01329593540',
+  hotlineAlt: '01329593541',
+  email: 'arka.banglaroti@gmail.com',
+  deliverySlots: {
+    morning: 'সকাল: ৭:০০টা - ১১:০০টা',
+    evening: 'সন্ধ্যা: ০৫:৩০টা - ০৯:৩০টা'
+  },
+  maxRadiusKm: 2.0,
+  guaranteedTimeMinutes: 15,
+  images: {
+    heroCombo: '/images/pdf_roti_dal_combo.png',
+    machine: '/images/pdf_machine_production.png',
+    rider: '/images/pdf_delivery_rider.png',
+    familyBreakfast: '/images/pdf_family_breakfast.png'
+  }
+};
+
 export const MENU_ITEMS: MenuItem[] = [
   {
-    id: 'fulko-ruti',
-    nameBn: 'হাতে তৈরি লাল আটার ফুলকো রুটি',
-    nameEn: 'Handmade Whole Wheat Fulko Ruti',
-    descriptionBn: '১০০% খাঁটি লাল আটার নরম ও ফুলকো তাজা রুটি, তাওয়া থেকে সরাসরি প্যাকেটে। তেলমুক্ত ও স্বাস্থ্যসম্মত।',
-    descriptionEn: '100% pure whole wheat, oil-free, puffed fresh from hot iron tawa straight into thermal packaging.',
-    price: 12,
+    id: 'roti-booter-dal-combo',
+    nameBn: 'গরম রুটি + বুটের ডাল কম্বো',
+    nameEn: 'Piping Hot Roti + Booter Dal Combo',
+    descriptionBn: 'গরম রুটির সাথে সুস্বাদু বুটের ডাল একটি সম্পূর্ণ খাবারের সুবিধা। একজন গৃহিণীর নির্ঝঞ্ঝাট সন্ধ্যা-সকাল।',
+    descriptionEn: 'Fresh hot puffed rutis paired with slow-cooked aromatic booter dal. The complete meal solution.',
+    taglineBn: 'ঝামেলাহীন সন্ধ্যা-সকাল • গৃহিণীর স্বস্তি',
+    price: 65,
+    unitBn: '১ কম্বো প্যাক',
+    unitEn: '1 combo pack',
+    category: 'combos',
+    prepTimeMinutes: 5,
+    popular: true,
+    isVegetarian: true,
+    badge: 'সেরা কম্বো অফার 🌟',
+    calories: '340 kcal',
+    image: '/images/pdf_roti_dal_combo.png',
+    ingredientsBn: ['৪টি তাজা বাংলা রুটি', '১ বাটি ঘন বুটের ডাল বাগার', 'কাঁচা মরিচ', 'কুচানো পেঁয়াজ'],
+    featuresBn: ['১৫ মিনিটে ডেলিভারি', 'থার্মাল ব্যাগে গরম', '১০০% পুষ্টিকর']
+  },
+  {
+    id: 'bangla-ruti-4pack',
+    nameBn: '৪টি বাংলা রুটি স্পেশাল প্যাক',
+    nameEn: 'Bangla Roti 4-Pack (Brochure Special)',
+    descriptionBn: 'সকাল সন্ধ্যায় খাবারের স্বাস্থ্যকর সঙ্গী। নরম ও সুস্বাদু রুটি সবার জন্য। ১০০% ফ্রেশ মেশিনমেড।',
+    descriptionEn: 'Healthy everyday meal companion. Puffed, soft, hygienic machine-made whole wheat rotis.',
+    taglineBn: '৪টি বাংলা রুটি মাত্র ৩৫ টাকা!',
+    price: 35,
+    unitBn: '৪ পিস প্যাক',
+    unitEn: '4 pcs pack',
+    category: 'ruti',
+    prepTimeMinutes: 4,
+    popular: true,
+    isVegetarian: true,
+    badge: 'মাত্র ৩৫৳ স্পেশাল 🔥',
+    calories: '281 kcal / 100g',
+    image: '/images/pdf_bangla_ruti.png',
+    ingredientsBn: ['সাদা গমের আটা', 'গুড়া দুধ', 'লবণ', 'বেকিং সোডা', 'ড্ৰাই ইস্ট', 'সয়াবিন তেল', 'সামান্য চিনি'],
+    featuresBn: ['100% Fresh', 'Machine Made', 'Hygienic', 'Quick Meal'],
+    nutritionFacts: {
+      energy: '২৮১ ক্যালরি',
+      carbs: '৫৬ গ্রাম',
+      protein: '৯.৫ গ্রাম',
+      fat: '২.০ গ্রাম',
+      fiber: '১.৫ গ্রাম',
+      sodium: '২০০ মি.গ্রা.'
+    }
+  },
+  {
+    id: 'diafit-roti',
+    nameBn: 'DiaFit Roti (ডায়াফিট রুটি)',
+    nameEn: 'DiaFit Health & Diabetic Friendly Roti',
+    descriptionBn: 'ডায়াবেটিস ও স্বাস্থ্য সচেতন গ্রাহকদের জন্য। Low GI, হাই ফাইবার ও সুগার ফ্রেন্ডলি ফর্মুলা।',
+    descriptionEn: 'Specially crafted for diabetics & fitness seekers. Low GI, high fiber, 100% natural seeds.',
+    taglineBn: 'সঠিক পছন্দ সুস্থ জীবন • ডায়াবেটিস ফ্রেন্ডলি',
+    price: 18,
     unitBn: 'প্রতি পিস',
     unitEn: 'per piece',
     category: 'ruti',
     prepTimeMinutes: 5,
     popular: true,
     isVegetarian: true,
-    badge: 'সেরা চয়েস 🔥',
-    calories: '75 kcal'
+    badge: 'ডায়াফিট স্পেশাল 🌿',
+    calories: '265 kcal / 100g',
+    image: '/images/pdf_diafit_roti.png',
+    ingredientsBn: ['লাল আটা', 'ওটস আটা', 'বার্লি পাউডার', 'শিয়া সীড', 'তিসি গুঁড়া', 'মেথি গুঁড়া', 'ইসুবগুল', 'দারুচিনি গুঁড়া', 'ড্ৰাই ইস্ট', 'সূর্যমুখী তেল', 'তিল', 'লবণ'],
+    featuresBn: ['Low GI', 'High Fiber', 'Sugar Friendly', 'Machine Made', 'Fresh & Soft'],
+    nutritionFacts: {
+      energy: '২৬৫ ক্যালরি',
+      carbs: '৪৮ গ্রাম',
+      protein: '১২.০ গ্রাম',
+      fat: '৩.০ গ্রাম',
+      fiber: '৮.০ গ্রাম',
+      sodium: '১৮০ মি.গ্রা.'
+    }
+  },
+  {
+    id: 'youngfuel-roti',
+    nameBn: 'YoungFuel Roti (ইয়াংফুয়েল রুটি)',
+    nameEn: 'YoungFuel High Protein Energy Booster Roti',
+    descriptionBn: 'High Protein Energy Booster - যুবসমাজের শক্তি ও কর্মক্ষমতার স্মার্ট চয়েস।',
+    descriptionEn: 'High protein energy booster. Fortified with chickpeas, peanut powder, oats & farm egg.',
+    taglineBn: 'যুবসমাজের শক্তি ও কর্মক্ষমতার স্মার্ট চয়েস',
+    price: 20,
+    unitBn: 'প্রতি পিস',
+    unitEn: 'per piece',
+    category: 'ruti',
+    prepTimeMinutes: 5,
+    popular: true,
+    isVegetarian: false,
+    badge: 'উচ্চ প্রোটিন বুস্টার ⚡',
+    calories: '280 kcal / 100g',
+    image: '/images/pdf_youngfuel_roti.png',
+    ingredientsBn: ['লাল আটা', 'ছোলা আটা', 'পিনাট পাউডার', 'বাদাম গুঁড়া', 'ওটস গুঁড়া', 'কাঁচা মুগ', 'ড্ৰাই ইস্ট', 'সূর্যমুখী তেল', 'ডিম', 'লবণ'],
+    featuresBn: ['উচ্চ প্রোটিন ও ফাইবার', 'দীর্ঘক্ষণ শক্তি জোগায়', 'দৈহিক ও মানসিক কর্মক্ষমতা বাড়ায়', 'স্বাস্থ্যসম্মত ও সুস্বাদু'],
+    nutritionFacts: {
+      energy: '২৮০ ক্যালরি',
+      carbs: '৫০ গ্রাম',
+      protein: '১৪.০ গ্রাম',
+      fat: '৬.৫ গ্রাম',
+      fiber: '৬.৫ গ্রাম',
+      sodium: '১৯০ মি.গ্রা.'
+    }
+  },
+  {
+    id: 'rice-flour-roti',
+    nameBn: 'চালের আটা রুটি (Rice Flour Roti)',
+    nameEn: 'Rice Flour Traditional Soft Roti',
+    descriptionBn: 'সুস্বাদু রুটি, ঐতিহ্যের পুষ্টি - নরম, হালকা ও সহজপাচ্য। ১০০% গ্লুটেন ফ্রি, নো অ্যাসিডিটি।',
+    descriptionEn: 'Authentic Bangladeshi rice flour flatbread. Delicate, light on stomach, gluten-free.',
+    taglineBn: 'নরম, হালকা ও সহজপাচ্য • ১০০% Gluten Free',
+    price: 16,
+    unitBn: 'প্রতি পিস',
+    unitEn: 'per piece',
+    category: 'ruti',
+    prepTimeMinutes: 5,
+    isVegetarian: true,
+    badge: 'গ্লুটেন ফ্রি 🌾',
+    calories: '190 kcal',
+    image: '/images/pdf_rice_flour_roti.png',
+    ingredientsBn: ['চালের গুঁড়া', 'কুসুম গরম পানি', 'লবণ', 'তেল'],
+    featuresBn: ['Gluten Free', 'পেট ফাঁপা বা অ্যাসিডিটি নেই', 'গ্যাস্ট্রিক ও বদহজম দূর করে']
+  },
+  {
+    id: 'spice-kalai-roti',
+    nameBn: 'Spice Kalai Roti (স্পাইস কলাই রুটি)',
+    nameEn: 'Chapainawabganj Spice Kalai Roti',
+    descriptionBn: 'চাঁপাইনবাবগঞ্জের ঐতিহ্যবাহী কলাই রুটি। ২৫% প্রাকৃতিক প্রোটিন সমৃদ্ধ, নরম ও সুস্বাদু।',
+    descriptionEn: 'Heritage black gram lentils flatbread from Chapainawabganj. Packed with 25% plant protein.',
+    taglineBn: 'চাঁপাইনবাবগঞ্জের ঐতিহ্যবাহী স্বাদ • ২৫% প্রোটিন',
+    price: 22,
+    unitBn: 'প্রতি পিস',
+    unitEn: 'per piece',
+    category: 'ruti',
+    prepTimeMinutes: 6,
+    isVegetarian: true,
+    badge: '২৫% প্রোটিন সমৃদ্ধ 💥',
+    calories: '230 kcal',
+    image: '/images/pdf_kalai_roti.png',
+    ingredientsBn: ['মাষকলাইয়ের আটা', 'আতপ চালের আটা', 'পানি', 'লবণ'],
+    featuresBn: ['২৫% প্রোটিন সমৃদ্ধ', 'ঐতিহ্যবাহী স্বাদ', 'সুস্বাদু ও পুষ্টিকর']
   },
   {
     id: 'shahi-paratha',
-    nameBn: 'গাওয়া ঘিয়ের লেয়ার পরোটা',
-    nameEn: 'Pure Ghee Layered Flaky Paratha',
-    descriptionBn: 'খাঁটি দেশি গাওয়া ঘি দিয়ে মচমচে খাস্তা ও নরম লেয়ারের স্পেশাল পরোটা। সুস্বাদু ও মুখরোচক।',
-    descriptionEn: 'Crisp, multi-layered flaky paratha brushed with pure desi cow ghee on slow tawa fire.',
+    nameBn: 'সাদ্দাক সিগনেচার পরোটা',
+    nameEn: 'Shaddak Signature Paratha (Low Trans-Fat)',
+    descriptionBn: 'গাওয়া ঘি ও উন্নত তেলে ভাজা মচমচে লেয়ার পরোটা। স্বাদ অতুলনীয়, হাইজিনিক ও বনস্পতি মুক্ত।',
+    descriptionEn: 'Artisanal multi-layered flaky paratha with pure desi cow ghee. Zero vanaspati, low trans-fat.',
+    taglineBn: 'খাঁটি গাওয়া ঘি ও উন্নত তেলের পারফেক্ট লেয়ার',
     price: 25,
     unitBn: 'প্রতি পিস',
     unitEn: 'per piece',
@@ -30,43 +181,19 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 6,
     popular: true,
     isVegetarian: true,
-    badge: 'গাওয়া ঘি স্পেশাল ✨',
-    calories: '185 kcal'
-  },
-  {
-    id: 'rumali-ruti',
-    nameBn: 'পাতলা রেশমি রুমালি রুটি',
-    nameEn: 'Silk Thin Rumali Ruti',
-    descriptionBn: 'হাতের জাদুতে আলতো করে ওল্টানো রুমালের মতো পাতলা ও নরম রুমালি রুটি। মাংস বা ডালের সাথে অপূর্ব।',
-    descriptionEn: 'Ultra-thin, soft, handkerchief-styled artisanal ruti baked on convex wok dome.',
-    price: 20,
-    unitBn: 'প্রতি পিস',
-    unitEn: 'per piece',
-    category: 'ruti',
-    prepTimeMinutes: 6,
-    isVegetarian: true,
-    calories: '90 kcal'
-  },
-  {
-    id: 'dim-porota',
-    nameBn: 'স্পেশাল ডিম পরোটা রোল',
-    nameEn: 'Special Egg Roll Paratha',
-    descriptionBn: 'পরোটার ভেতর তাজা দেশি ডিম, পেঁয়াজ, কাঁচামরিচ দিয়ে তৈরি গরম গরম রোল।',
-    descriptionEn: 'Hot flaky paratha encasing beaten farm egg with chopped shallots, green chilies and house spice.',
-    price: 45,
-    unitBn: 'প্রতি পিস',
-    unitEn: 'per piece',
-    category: 'paratha',
-    prepTimeMinutes: 7,
-    badge: 'নাস্তা স্পেশাল 🍳',
-    calories: '280 kcal'
+    badge: 'সিগনেচার পরোটা ✨',
+    calories: '185 kcal',
+    image: '/images/pdf_saddak_paratha.png',
+    ingredientsBn: ['উন্নত ময়দা', 'খাঁটি গাওয়া ঘি', 'রিফাইন্ড সয়াবিন ও রাইস ব্রান অয়েল', 'সামান্য চিনি', 'লবণ'],
+    featuresBn: ['Rich Aroma of Ghee', 'Low Trans-Fat (Vanaspati Free)', 'More Taste & Satisfaction']
   },
   {
     id: 'deshi-booter-dal',
     nameBn: 'ঘরোয়া স্পেশাল বুটের ডাল বাগার',
-    nameEn: 'Homestyle Spiced Yellow Gram Dal',
-    descriptionBn: 'জিরা, শুকনা মরিচ আর তেজপাতার বাগার দেওয়া ঘন সুস্বাদু বুটের ডাল। রুটি ও পরোটার সেরা জুটি।',
-    descriptionEn: 'Slow-simmered split Bengal gram tempered with cumin, whole dried red chili and bay leaves.',
+    nameEn: 'Homestyle Spiced Booter Dal Bagar',
+    descriptionBn: 'জিরা, শুকনা মরিচ আর তেজপাতার বাগার দেওয়া ঘন সুস্বাদু বুটের ডাল। রুটির সেরা সঙ্গী।',
+    descriptionEn: 'Slow-simmered split Bengal gram tempered with cumin seeds, whole dried red chili and bay leaves.',
+    taglineBn: 'জিরা ও শুকনা মরিচের আসল বাগার',
     price: 40,
     unitBn: '১ বাটি',
     unitEn: '1 bowl',
@@ -74,21 +201,40 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 4,
     popular: true,
     isVegetarian: true,
-    calories: '140 kcal'
+    badge: 'ঘরোয়া বাগার 🍲',
+    calories: '140 kcal',
+    image: '/images/pdf_roti_dal_combo.png',
+    ingredientsBn: ['বুটের ডাল (ছোলার ডাল)', 'জিরা', 'শুকনা মরিচ', 'তেজপাতা', 'সরিষার তেল', 'হলুদ ও ধনে']
+  },
+  {
+    id: 'dim-porota',
+    nameBn: 'স্পেশাল ডিম পরোটা রোল',
+    nameEn: 'Special Desi Egg Paratha Roll',
+    descriptionBn: 'পরোটার ভেতর তাজা দেশি ডিম, পেঁয়াজ, কাঁচামরিচ দিয়ে তৈরি গরম গরম পুষ্টিকর রোল।',
+    descriptionEn: 'Hot flaky paratha encasing farm egg omelette with fresh shallots, green chilies and house spice.',
+    price: 45,
+    unitBn: 'প্রতি পিস',
+    unitEn: 'per piece',
+    category: 'paratha',
+    prepTimeMinutes: 7,
+    badge: 'নাস্তা স্পেশাল 🍳',
+    calories: '280 kcal',
+    image: '/images/pdf_saddak_paratha.png'
   },
   {
     id: 'alu-sobji-torkari',
-    nameBn: 'পাঁচফোড়ন মেথি আলু ভাজি',
-    nameEn: 'Five-Spice Spiced Potato Vegetable',
-    descriptionBn: 'সকালের তাজা ফুলকপি, আলু ও পাঁচফোড়ন দিয়ে কষানো সুস্বাদু ভাজি। কোনো কৃত্রিম রঙ নেই।',
-    descriptionEn: 'Homestyle potatoes sautéed with traditional panch-phoron spice blend and mild green chilies.',
+    nameBn: 'পাঁচফোড়ন কাশ্মীরি আলু ভাজি / দম',
+    nameEn: 'Kashmiri Alur Dom & Potato Curry',
+    descriptionBn: 'কাশ্মীরি স্টাইল আলুর দম ও পাঁচফোড়ন দিয়ে কষানো সুস্বাদু ঘরোয়া তরকারি। রুটি-পরোটার সেরা জুটি।',
+    descriptionEn: 'Homestyle Kashmiri spiced baby potatoes cooked in rich fragrant gravy.',
     price: 35,
     unitBn: '১ বাটি',
     unitEn: '1 bowl',
     category: 'curry',
     prepTimeMinutes: 4,
     isVegetarian: true,
-    calories: '110 kcal'
+    calories: '110 kcal',
+    image: '/images/pdf_alur_dom.png'
   },
   {
     id: 'shahi-beef-kolija',
@@ -103,7 +249,8 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 5,
     popular: true,
     badge: 'সেরা স্বাদ 👑',
-    calories: '260 kcal'
+    calories: '260 kcal',
+    image: '/images/pdf_alur_dom.png'
   },
   {
     id: 'dim-vaji',
@@ -116,36 +263,8 @@ export const MENU_ITEMS: MenuItem[] = [
     unitEn: '1 piece',
     category: 'curry',
     prepTimeMinutes: 3,
-    calories: '95 kcal'
-  },
-  {
-    id: 'morning-combo-box',
-    nameBn: 'BRN সকালের কম্বো বক্স (৫ রুটি + ডাল + ডিম)',
-    nameEn: 'BRN Morning Breakfast Combo (5 Ruti + Dal + Egg)',
-    descriptionBn: '৫ পিস গরম ফুলকো রুটি, ১ বাটি স্পেশাল বুটের ডাল এবং ১টি দেশি ডিম ভাজি। দ্রুত ১৫ মিনিটে ডেলিভারি।',
-    descriptionEn: '5 fresh piping-hot fulko rutis, 1 bowl aromatic booter dal, and 1 crispy farm egg omelette.',
-    price: 110,
-    unitBn: '১ কম্বো বক্স',
-    unitEn: '1 combo pack',
-    category: 'combos',
-    prepTimeMinutes: 7,
-    popular: true,
-    badge: '৳১৫ ছাড়! ⚡',
-    calories: '490 kcal'
-  },
-  {
-    id: 'office-family-pack',
-    nameBn: 'ফ্যামিলি প্যাক (১০ রুটি + ২ বুটের ডাল + ২ ডিম ভাজি)',
-    nameEn: 'BRN Family Hot Box (10 Ruti + 2 Dal + 2 Eggs)',
-    descriptionBn: 'পুরো পরিবারের জন্য ইনসুলেটেড গরম ক্যাসারোল প্যাক। রুটি থাকে একদম ধোঁয়া ওঠা গরম।',
-    descriptionEn: '10 handmade whole wheat rutis in thermal casserole box, 2 bowls dal, and 2 fresh egg omelettes.',
-    price: 220,
-    unitBn: '১ ফ্যামিলি বক্স',
-    unitEn: '1 family box',
-    category: 'combos',
-    prepTimeMinutes: 8,
-    badge: 'ফ্যামিলি হট প্যাক ♨️',
-    calories: '980 kcal'
+    calories: '95 kcal',
+    image: '/images/pdf_youngfuel_roti.png'
   },
   {
     id: 'nolen-gurer-cha',
@@ -159,70 +278,51 @@ export const MENU_ITEMS: MenuItem[] = [
     category: 'drinks',
     prepTimeMinutes: 4,
     badge: 'নলেন গুড় ☕',
-    calories: '120 kcal'
+    calories: '120 kcal',
+    image: '/images/pdf_shahi_cha.png'
   }
 ];
 
 export const MIRPUR_LOCATIONS: MirpurLocation[] = [
   {
-    id: 'mirpur-11-avenue-4',
-    nameBn: 'মিরপুর ১১, এভিনিউ ৪ (নানক চত্বর সংলগ্ন)',
-    nameEn: 'Mirpur 11, Avenue 4 (Near Nanna Mor)',
-    zone: 'Mirpur 11',
-    distanceKm: 0.6,
+    id: 'pallabi-main',
+    nameBn: 'পল্লবী (প্রধান ইউনিট - সেকশন ১২)',
+    nameEn: 'Pallabi Main Unit (Section 12)',
+    zone: 'Mirpur 12',
+    distanceKm: 0.3,
     estimatedDeliveryMin: 10,
     isAvailable: true,
-    addressHint: 'কেন্দ্রীয় কিচেনের কাছেই (৬০০ মিটার)'
+    addressHint: 'হাউজ ২০৫, রোড ১৬, ব্লক বি (সেন্ট্রাল কিচেন সংলগ্ন)'
   },
   {
-    id: 'mirpur-11-block-b',
-    nameBn: 'মিরপুর ১১, ব্লক বি (কালশী রোড সংলগ্ন)',
-    nameEn: 'Mirpur 11, Block B (Kalshi Road)',
-    zone: 'Mirpur 11',
-    distanceKm: 1.1,
+    id: 'mirpur-dohs',
+    nameBn: 'মিরপুর ডিওএইচএস (Mirpur DOHS)',
+    nameEn: 'Mirpur DOHS Residential Zone',
+    zone: 'Mirpur 12',
+    distanceKm: 1.2,
     estimatedDeliveryMin: 12,
     isAvailable: true,
-    addressHint: '১.১ কিমি - এক্সপ্রেস ডেলিভারি জোন'
+    addressHint: 'গেট ১ ও ২ সংলগ্ন এলাকা (১.২ কিমি)'
   },
   {
-    id: 'mirpur-11-bus-stand',
-    nameBn: 'মিরপুর ১১ মেট্রো স্টেশন / বাস স্ট্যান্ড এরিয়া',
-    nameEn: 'Mirpur 11 Metro Station / Bus Stand Area',
+    id: 'mirpur-11-avenue-4',
+    nameBn: 'মিরপুর-১১ (এভিনিউ ৪ ও নানক চত্বর)',
+    nameEn: 'Mirpur-11 (Avenue 4 & Nanna Mor)',
     zone: 'Mirpur 11',
-    distanceKm: 0.9,
+    distanceKm: 0.8,
     estimatedDeliveryMin: 11,
     isAvailable: true,
-    addressHint: 'মেট্রো সংলগ্ন এলাকা (৯০০ মিটার)'
+    addressHint: 'মেট্রো স্টেশন ও কালশী রোড সংলগ্ন (৮০০ মিটার)'
   },
   {
     id: 'mirpur-12-block-c',
-    nameBn: 'মিরপুর ১২, ব্লক সি (মুসলিম বাজার / ঝিলপাড়)',
-    nameEn: 'Mirpur 12, Block C (Muslim Bazar / Jheelpar)',
+    nameBn: 'মিরপুর-১২ (ব্লক সি ও মুসলিম বাজার)',
+    nameEn: 'Mirpur-12 (Block C & Muslim Bazar)',
     zone: 'Mirpur 12',
-    distanceKm: 1.3,
-    estimatedDeliveryMin: 13,
+    distanceKm: 1.1,
+    estimatedDeliveryMin: 12,
     isAvailable: true,
-    addressHint: '১.৩ কিমি - নির্ধারিত ডেলিভারি জোন'
-  },
-  {
-    id: 'mirpur-12-bus-stand',
-    nameBn: 'মিরপুর ১২ বাস স্ট্যান্ড ও পল্লবী থানা চত্বর',
-    nameEn: 'Mirpur 12 Bus Stand & Pallabi PS Area',
-    zone: 'Mirpur 12',
-    distanceKm: 1.6,
-    estimatedDeliveryMin: 14,
-    isAvailable: true,
-    addressHint: '১.৬ কিমি - ২ কিমির ভেতরে (অনুমোদিত)'
-  },
-  {
-    id: 'mirpur-12-dohs-gate',
-    nameBn: 'মিরপুর ১২, ডিওএইচএস ১ নম্বর গেট সংলগ্ন',
-    nameEn: 'Mirpur 12, DOHS Gate 1 Area',
-    zone: 'Mirpur 12',
-    distanceKm: 1.8,
-    estimatedDeliveryMin: 15,
-    isAvailable: true,
-    addressHint: '১.৮ কিমি - সর্বোচ্চ ১৫ মিনিট গ্যারান্টি'
+    addressHint: 'ঝিলপাড় ও বাসস্ট্যান্ড এরিয়া (১.১ কিমি)'
   },
   {
     id: 'mirpur-10-roundabout',
@@ -233,24 +333,56 @@ export const MIRPUR_LOCATIONS: MirpurLocation[] = [
     estimatedDeliveryMin: 28,
     isAvailable: false,
     addressHint: '২.৮ কিমি - ২ কিমি সীমার বাইরে (শীঘ্রই চালু হবে)'
+  }
+];
+
+export const BRN_SERVICES = [
+  {
+    id: 'machine-production',
+    titleBn: 'স্বয়ংক্রিয় মেশিনে তাজা রুটি উৎপাদন',
+    descBn: 'প্রতিদিন স্বাস্থ্যসম্মত পরিবেশে সম্পূর্ণ আধুনিক মেশিনে তৈরি তাজা রুটি প্রস্তুত ও সরবরাহ।',
+    icon: 'Flame'
   },
   {
-    id: 'pallabi-ext',
-    nameBn: 'পল্লবী এক্সটেনশন (মিরপুর সাড়ে এগারো)',
-    nameEn: 'Pallabi Extension (Mirpur 11.5)',
-    zone: 'Mirpur 11',
-    distanceKm: 1.4,
-    estimatedDeliveryMin: 13,
-    isAvailable: true,
-    addressHint: '১.৪ কিমি - ১৫ মিনিট ডেলিভারি কভারেজ'
+    id: 'classified-roti',
+    titleBn: 'পুষ্টিকর ও শ্রেণীবদ্ধ রুটি-পরোটা',
+    descBn: 'ডায়াবেটিসের জন্য DiaFit, কর্মক্ষমতার জন্য YoungFuel, গ্লুটেন ফ্রি চালের রুটি ও ঐতিহ্যবাহী কলাই রুটি।',
+    icon: 'Sparkles'
+  },
+  {
+    id: 'combo-meal',
+    titleBn: 'রুটি + বুটের ডাল কম্বো',
+    descBn: 'গরম রুটির সাথে সুস্বাদু বুটের ডাল। একজন গৃহিণীর নির্ঝঞ্ঝাট সকাল ও সন্ধ্যার পুষ্টিকর খাবার।',
+    icon: 'Package'
+  },
+  {
+    id: 'own-rider',
+    titleBn: 'Own Rider Routing System',
+    descBn: 'নিজস্ব ডেলিভারি কর্মী ও ডিজিটাল পথ নির্দেশক ব্যবস্থা—নির্ধারিত সর্বোচ্চ ২ কিমি রুটে ১৫ মিনিটে হোম ডেলিভারি।',
+    icon: 'Bike'
+  },
+  {
+    id: 'digital-wallet',
+    titleBn: 'প্রিপেইড ওয়ালেট ও অনলাইন সুবিধা',
+    descBn: 'bKash, নগদ ও Rocket-এ নিরাপদ ডিজিটাল পেমেন্ট—খুচরা ও ভাঙতি টাকার ঝামেলাহীন ব্যবস্থা।',
+    icon: 'Wallet'
+  },
+  {
+    id: 'wholesale-supply',
+    titleBn: 'পাইকারি রুটি সরবরাহ সার্ভিস',
+    descBn: 'হাসপাতাল, মাদ্রাসা, হোস্টেল, কারখানা ও অফিসের জন্য প্রতিদিনের পাইকারি রুটি সরবরাহ চুক্তি।',
+    icon: 'Building'
   }
 ];
 
 export const BRN_KITCHEN_LOCATION = {
-  name: 'BRN Central Bakery Hub, Mirpur 11 Avenue 3',
+  name: 'Bangla Roti Network, Central Kitchen, Pallabi',
   lat: 23.8223,
   lng: 90.3654,
-  hotline: '01711-BRN-RUTI',
+  hotline: '01329593540',
+  hotlineAlt: '01329593541',
+  email: 'arka.banglaroti@gmail.com',
+  address: 'হাউজ- ২০৫, রোড- ১৬, ব্লক- বি, সেকশন-১২, পল্লবী, ঢাকা-১২১৬',
   maxRadiusKm: 2.0,
   guaranteedTimeMinutes: 15
 };

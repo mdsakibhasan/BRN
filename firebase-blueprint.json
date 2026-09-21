@@ -60,6 +60,26 @@
         }
       },
       "required": ["userId", "balance", "updatedAt"]
+    },
+    "AppConfig": {
+      "title": "AppConfig",
+      "description": "Global application configuration including admin-uploaded custom images.",
+      "type": "object",
+      "properties": {
+        "images": {
+          "type": "string",
+          "description": "JSON serialized key-value map of custom image URLs"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last updated timestamp"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "Admin identifier"
+        }
+      },
+      "required": ["images", "updatedAt"]
     }
   },
   "firestore": {
@@ -70,6 +90,10 @@
     "/wallets/{walletId}": {
       "schema": "Wallet",
       "description": "Collection of user wallet accounts"
+    },
+    "/app_config/{configId}": {
+      "schema": "AppConfig",
+      "description": "Application configuration settings such as uploaded custom images"
     }
   }
 }

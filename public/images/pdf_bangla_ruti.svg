@@ -1,0 +1,138 @@
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+    <defs>
+      <linearGradient id="bg_ruti" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fffbeb"/>
+        <stop offset="50%" stop-color="#fef3c7"/>
+        <stop offset="100%" stop-color="#fde68a"/>
+      </linearGradient>
+      <radialGradient id="thali" cx="50%" cy="50%" r="50%">
+        <stop offset="70%" stop-color="#d97706"/>
+        <stop offset="95%" stop-color="#92400e"/>
+        <stop offset="100%" stop-color="#78350f"/>
+      </radialGradient>
+      <radialGradient id="ruti_face" cx="45%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#fef9c3"/>
+        <stop offset="60%" stop-color="#fde047"/>
+        <stop offset="85%" stop-color="#ca8a04"/>
+        <stop offset="100%" stop-color="#a16207"/>
+      </radialGradient>
+      <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#78350f" flood-opacity="0.25"/>
+      </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="800" height="500" fill="url(#bg_ruti)"/>
+
+    <!-- Subtle texture lines -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#f59e0b" stroke-width="0.75" stroke-opacity="0.15"/>
+    </pattern>
+    <rect width="800" height="500" fill="url(#grid)"/>
+
+    <!-- Top Banner Ribbon like PDF Page 1 -->
+    <rect x="0" y="0" width="800" height="70" fill="#78350f"/>
+    <rect x="0" y="65" width="800" height="5" fill="#f59e0b"/>
+    <text x="35" y="44" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="900" fill="#fef3c7">
+      Bangla Roti Network • বাংলা রুটি
+    </text>
+    <text x="765" y="44" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#fde68a">
+      "সকাল সন্ধ্যায় খাবারের স্বাস্থ্যকর সঙ্গী"
+    </text>
+
+    <!-- Price Tag Badge (Matching Brochure) -->
+    <g transform="translate(620, 100)" filter="url(#shadow)">
+      <rect width="145" height="65" rx="14" fill="#dc2626"/>
+      <text x="72" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="#fef2f2">৪টি বাংলা রুটি</text>
+      <text x="72" y="52" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="900" fill="#fef08a">মাত্র ৩৫৳</text>
+    </g>
+
+    <!-- Center Woven Thali & Roti Stack (from PDF) -->
+    <g transform="translate(380, 290)" filter="url(#shadow)">
+      <!-- Woven Thali / Bamboo Plate -->
+      <circle r="175" fill="url(#thali)"/>
+      <circle r="162" fill="#b45309" stroke="#fef3c7" stroke-dasharray="4,6" stroke-width="3"/>
+      <circle r="150" fill="#fef3c7" fill-opacity="0.95"/>
+
+      <!-- Stacked Rotis with Golden Toast Marks -->
+      <!-- Bottom Roti -->
+      <ellipse cx="-12" cy="10" rx="135" ry="120" fill="url(#ruti_face)" opacity="0.8"/>
+      <!-- Mid Roti -->
+      <ellipse cx="10" cy="-5" rx="132" ry="118" fill="url(#ruti_face)" opacity="0.9"/>
+      <!-- Top Puffed Roti -->
+      <ellipse cx="0" cy="-18" rx="130" ry="115" fill="url(#ruti_face)"/>
+
+      <!-- Golden brown toasted blister spots (Same as PDF photo) -->
+      <ellipse cx="-45" cy="-45" rx="18" ry="10" fill="#92400e" opacity="0.65"/>
+      <ellipse cx="40" cy="-30" rx="22" ry="14" fill="#78350f" opacity="0.7"/>
+      <ellipse cx="-10" cy="15" rx="25" ry="12" fill="#854d0e" opacity="0.6"/>
+      <ellipse cx="60" cy="10" rx="14" ry="9" fill="#92400e" opacity="0.65"/>
+      <ellipse cx="-70" cy="0" rx="16" ry="11" fill="#78350f" opacity="0.6"/>
+      <ellipse cx="15" cy="-60" rx="14" ry="8" fill="#854d0e" opacity="0.5"/>
+      <ellipse cx="-30" cy="35" rx="20" ry="9" fill="#92400e" opacity="0.6"/>
+      
+      <!-- Wheat grain illustration beside -->
+      <path d="M 120 70 Q 150 90 170 120" stroke="#ca8a04" stroke-width="3" fill="none"/>
+      <ellipse cx="135" cy="80" rx="8" ry="4" fill="#ca8a04" transform="rotate(35, 135, 80)"/>
+      <ellipse cx="150" cy="95" rx="8" ry="4" fill="#ca8a04" transform="rotate(35, 150, 95)"/>
+      <ellipse cx="165" cy="110" rx="8" ry="4" fill="#ca8a04" transform="rotate(35, 165, 110)"/>
+    </g>
+
+    <!-- Left Nutrition & Ingredients Summary Box (from PDF) -->
+    <g transform="translate(35, 100)" filter="url(#shadow)">
+      <rect width="260" height="360" rx="16" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+      <rect width="260" height="42" rx="16" fill="#f59e0b"/>
+      <rect x="0" y="24" width="260" height="18" fill="#f59e0b"/>
+      <text x="130" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="900" fill="#1c1917">
+        উপাদান ও পুষ্টিগুণ (প্রতি ১০০ গ্রাম)
+      </text>
+
+      <text x="20" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#78350f">মূল উপাদানসমূহ:</text>
+      <text x="20" y="94" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">✓ সাদা গমের আটা (ফার্স্ট গ্রেড)</text>
+      <text x="20" y="116" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">✓ গুড়া দুধ ও সামান্য ড্রাই ইস্ট</text>
+      <text x="20" y="138" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">✓ পরিমিত লবণ, বেকিং সোডা, চিনি</text>
+      <text x="20" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#4b5563">✓ বিশুদ্ধ রিফাইন্ড সয়াবিন তেল</text>
+
+      <line x1="20" y1="180" x2="240" y2="180" stroke="#f3f4f6" stroke-width="2"/>
+
+      <text x="20" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1f2937">Nutrition Facts:</text>
+      
+      <g transform="translate(20, 220)">
+        <rect width="220" height="24" fill="#fef3c7" rx="4"/>
+        <text x="10" y="16" font-size="12" font-weight="bold" fill="#78350f">ক্যালোরি / Energy</text>
+        <text x="210" y="16" text-anchor="end" font-size="12" font-weight="900" fill="#78350f">২৪১ kcal</text>
+      </g>
+      <g transform="translate(20, 248)">
+        <rect width="220" height="24" fill="#f9fafb" rx="4"/>
+        <text x="10" y="16" font-size="12" fill="#374151">কার্বোহাইড্রেট</text>
+        <text x="210" y="16" text-anchor="end" font-size="12" font-weight="bold" fill="#111827">৫৪.৩ গ্রাম</text>
+      </g>
+      <g transform="translate(20, 276)">
+        <rect width="220" height="24" fill="#fef3c7" rx="4"/>
+        <text x="10" y="16" font-size="12" fill="#374151">প্রোটিন / Protein</text>
+        <text x="210" y="16" text-anchor="end" font-size="12" font-weight="bold" fill="#111827">৪.৩ গ্রাম</text>
+      </g>
+      <g transform="translate(20, 304)">
+        <rect width="220" height="24" fill="#f9fafb" rx="4"/>
+        <text x="10" y="16" font-size="12" fill="#374151">ডায়েটরি ফাইবার</text>
+        <text x="210" y="16" text-anchor="end" font-size="12" font-weight="bold" fill="#111827">২.৫ গ্রাম</text>
+      </g>
+    </g>
+
+    <!-- Bottom 4 Feature Badges (Matching PDF Page 1) -->
+    <g transform="translate(320, 440)">
+      <rect x="0" y="0" width="105" height="38" rx="8" fill="#166534"/>
+      <text x="52" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff">100% Fresh</text>
+
+      <rect x="115" y="0" width="105" height="38" rx="8" fill="#1e3a8a"/>
+      <text x="167" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff">Machine Made</text>
+
+      <rect x="230" y="0" width="105" height="38" rx="8" fill="#78350f"/>
+      <text x="282" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff">Hygienic</text>
+
+      <rect x="345" y="0" width="105" height="38" rx="8" fill="#991b1b"/>
+      <text x="397" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="#ffffff">Quick Meal</text>
+    </g>
+  </svg>
+  

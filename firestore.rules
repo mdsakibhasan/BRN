@@ -8,6 +8,9 @@ service cloud.firestore {
     match /wallets/{walletId} {
       allow read, write: if true;
     }
+    match /app_config/{configId} {
+      allow read, write: if true;
+    }
     match /test/connection {
       allow read: if true;
     }

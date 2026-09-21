@@ -9,7 +9,9 @@ import {
   MapPin, 
   Clock, 
   Plus,
-  Apple
+  Apple,
+  Camera,
+  ShieldCheck
 } from 'lucide-react';
 import { Language } from '../types';
 
@@ -24,6 +26,8 @@ interface HeaderProps {
   onToggleViewMode: (mode: 'mobile' | 'web') => void;
   onOpenFlutterCode: () => void;
   onOpenIPhoneInstall: () => void;
+  onOpenImageUploader?: () => void;
+  onOpenAdminPanel?: () => void;
   selectedZone: string;
 }
 
@@ -38,6 +42,8 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleViewMode,
   onOpenFlutterCode,
   onOpenIPhoneInstall,
+  onOpenImageUploader,
+  onOpenAdminPanel,
   selectedZone
 }) => {
   const isBn = language === 'bn';
@@ -145,6 +151,32 @@ export const Header: React.FC<HeaderProps> = ({
             <Code2 className="w-3.5 h-3.5 text-sky-400" />
             <span className="hidden sm:inline">{isBn ? 'Flutter কোড' : 'Flutter Code'}</span>
           </button>
+
+          {/* PDF Brochure Images & Viewer Button */}
+          {onOpenImageUploader && (
+            <button
+              id="open-pdf-images-btn"
+              onClick={onOpenImageUploader}
+              className="flex items-center gap-1.5 bg-amber-950/60 hover:bg-amber-900 text-amber-300 border border-amber-500/50 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm hover:shadow-amber-500/10 cursor-pointer"
+              title="ব্রোশিওরের আসল ছবি ও বিবরণ দেখুন"
+            >
+              <Camera className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">{isBn ? 'PDF ব্রোশিওর ছবি' : 'PDF Images'}</span>
+            </button>
+          )}
+
+          {/* Admin Panel Button */}
+          {onOpenAdminPanel && (
+            <button
+              id="open-admin-panel-btn"
+              onClick={onOpenAdminPanel}
+              className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs transition-all shadow-md hover:shadow-amber-500/20 cursor-pointer"
+              title="এডমিন প্যানেল (ছবি আপলোড ও লাইভ অপারেশন)"
+            >
+              <ShieldCheck className="w-4 h-4 text-stone-950" />
+              <span>{isBn ? 'এডমিন প্যানেল' : 'Admin'}</span>
+            </button>
+          )}
 
           {/* iPhone / iOS Install Button */}
           <button
