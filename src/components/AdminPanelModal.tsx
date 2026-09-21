@@ -38,8 +38,10 @@ import {
 } from 'lucide-react';
 import { BRN_BRAND_INFO, MENU_ITEMS } from '../data/menu';
 import { CustomImagesMap } from './ImageUploaderModal';
-import { MenuItem } from '../types';
+import { MenuItem, QuickOfferItem, HeaderConfig, HeroBannerConfig } from '../types';
 import { EditMenuItemModal } from './EditMenuItemModal';
+import { EditOfferModal } from './EditOfferModal';
+import { EditHeroBannerModal } from './EditHeroBannerModal';
 
 export interface StoreSectionDef {
   id: string;
@@ -314,6 +316,21 @@ interface AdminPanelModalProps {
   onUpdateMenuItem?: (item: MenuItem) => void | Promise<void>;
   onDeleteCustomMenuItem?: (itemId: string) => void | Promise<void>;
   onResetModifiedItem?: (itemId: string) => void | Promise<void>;
+  // Header & Logo Management
+  headerConfig?: HeaderConfig;
+  onUpdateHeaderConfig?: (config: HeaderConfig) => void | Promise<void>;
+  onResetHeaderConfig?: () => void | Promise<void>;
+  // Offer Section Management
+  quickOffers?: QuickOfferItem[];
+  onAddQuickOffer?: (offer: QuickOfferItem) => void | Promise<void>;
+  onUpdateQuickOffer?: (offer: QuickOfferItem) => void | Promise<void>;
+  onDeleteQuickOffer?: (offerId: string) => void | Promise<void>;
+  onToggleQuickOfferActive?: (offerId: string, isActive: boolean) => void | Promise<void>;
+  onResetQuickOffers?: () => void | Promise<void>;
+  // Hero Banner Section Management
+  heroBannerConfig?: HeroBannerConfig;
+  onUpdateHeroBannerConfig?: (config: HeroBannerConfig) => void | Promise<void>;
+  onResetHeroBannerConfig?: () => void | Promise<void>;
 }
 
 export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
@@ -337,7 +354,19 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
   onAddMenuItem,
   onUpdateMenuItem,
   onDeleteCustomMenuItem,
-  onResetModifiedItem
+  onResetModifiedItem,
+  headerConfig,
+  onUpdateHeaderConfig,
+  onResetHeaderConfig,
+  quickOffers = [],
+  onAddQuickOffer,
+  onUpdateQuickOffer,
+  onDeleteQuickOffer,
+  onToggleQuickOfferActive,
+  onResetQuickOffers,
+  heroBannerConfig,
+  onUpdateHeroBannerConfig,
+  onResetHeroBannerConfig
 }) => {
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -346,8 +375,8 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
   const [pinInput, setPinInput] = useState('');
   const [authError, setAuthError] = useState(false);
 
-  // Active Tab: 'sections' | 'images' | 'items' | 'orders' | 'settings'
-  const [activeTab, setActiveTab] = useState<'sections' | 'images' | 'items' | 'orders' | 'settings'>('sections');
+  // Active Tab: 'sections' | 'images' | 'items' | 'offers' | 'header' | 'orders' | 'settings'
+  const [activeTab, setActiveTab] = useState<'sections' | 'images' | 'items' | 'offers' | 'header' | 'orders' | 'settings'>('sections');
 
   // Image Uploading State
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'ruti' | 'curry' | 'combos' | 'brand'>('all');
@@ -360,6 +389,34 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
   // Add / Edit Food Item Modal State
   const [isEditItemModalOpen, setIsEditItemModalOpen] = useState<boolean>(false);
   const [itemBeingEdited, setItemBeingEdited] = useState<MenuItem | null>(null);
+
+  // Add / Edit Quick Offer Modal State
+  const [isEditOfferModalOpen, setIsEditOfferModalOpen] = useState<boolean>(false);
+  const [offerBeingEdited, setOfferBeingEdited] = useState<QuickOfferItem | null>(null);
+
+  // Add / Edit Hero Banner Modal State
+  const [isEditHeroModalOpen, setIsEditHeroModalOpen] = useState<boolean>(false);
+
+  // Header and Logo Edit State
+  const [localHeaderConfig, setLocalHeaderConfig] = useState<HeaderConfig>(() => {
+    return headerConfig || {
+      logoTextBn: 'বাংলা রুটি',
+      logoTagBn: 'BRN',
+      logoIconType: 'flame',
+      headerTaglineBn: 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস',
+      showLocationPill: true,
+      showWalletPill: true,
+      showApkBtn: true,
+      showHeaderAdminBtn: false,
+      showHeaderImageBtn: false
+    };
+  });
+
+  useEffect(() => {
+    if (headerConfig) {
+      setLocalHeaderConfig(headerConfig);
+    }
+  }, [headerConfig]);
 
   const [selectedItemKey, setSelectedItemKey] = useState<string>(initialTargetKey || 'bangla-ruti-4pack');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -452,7 +509,21 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
 
             const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.88);
             await onUpdateImage(targetKey, optimizedDataUrl);
-            showToast('✅ ইমেজ সফলভাবে আপলোড ও ক্লাউডে সেভ হয়েছে!');
+            
+            if (targetKey === 'custom_logo_icon') {
+              const updatedHeader: HeaderConfig = {
+                ...localHeaderConfig,
+                logoIconType: 'image',
+                logoCustomImage: optimizedDataUrl
+              };
+              setLocalHeaderConfig(updatedHeader);
+              if (onUpdateHeaderConfig) {
+                await onUpdateHeaderConfig(updatedHeader);
+              }
+              showToast('✅ কাস্টম লোগো সফলভাবে আপলোড ও হেডারে যুক্ত হয়েছে!');
+            } else {
+              showToast('✅ ইমেজ সফলভাবে আপলোড ও ক্লাউডে সেভ হয়েছে!');
+            }
           }
         } catch (err) {
           console.error(err);
@@ -725,7 +796,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                   }`}
                 >
                   <LayoutGrid className="w-4 h-4" />
-                  <span>খাবার আইটেম ও মেনু (Add/Edit)</span>
+                  <span>খাবার মেনু (Add/Edit)</span>
                   {deletedMenuItems.length > 0 ? (
                     <span className="text-[10px] bg-rose-600 text-white px-1.5 py-0.2 rounded-full font-bold">
                       {deletedMenuItems.length}টি বন্ধ
@@ -737,7 +808,36 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                   )}
                 </button>
 
-                {/* 4. LIVE ORDERS TAB */}
+                {/* 4. QUICK OFFERS & BANNER TAB (NEW) */}
+                <button
+                  onClick={() => setActiveTab('offers')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                    activeTab === 'offers'
+                      ? 'bg-amber-500 text-stone-950 shadow-md font-black'
+                      : 'text-stone-400 hover:text-white hover:bg-stone-800'
+                  }`}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>অফার সেকশন (Add/Edit)</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${activeTab === 'offers' ? 'bg-black/20 text-stone-950' : 'bg-stone-800 text-stone-300'}`}>
+                    {quickOffers.length}
+                  </span>
+                </button>
+
+                {/* 5. LOGO & HEADER CONFIG TAB (NEW) */}
+                <button
+                  onClick={() => setActiveTab('header')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                    activeTab === 'header'
+                      ? 'bg-amber-500 text-stone-950 shadow-md font-black'
+                      : 'text-stone-400 hover:text-white hover:bg-stone-800'
+                  }`}
+                >
+                  <Flame className="w-4 h-4" />
+                  <span>লোগো ও হেডার নিয়ন্ত্রণ</span>
+                </button>
+
+                {/* 6. LIVE ORDERS TAB */}
                 <button
                   onClick={() => setActiveTab('orders')}
                   className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
@@ -750,7 +850,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                   <span>লাইভ অর্ডার ({orders.length})</span>
                 </button>
 
-                {/* 5. SETTINGS TAB */}
+                {/* 7. SETTINGS TAB */}
                 <button
                   onClick={() => setActiveTab('settings')}
                   className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
@@ -873,6 +973,18 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                           </span>
 
                           <div className="flex items-center gap-2">
+                            {sec.id === 'kitchen_dispatch_info' && (
+                              <button
+                                type="button"
+                                onClick={() => setIsEditHeroModalOpen(true)}
+                                className="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                                title="ব্যানারের টেক্সট ও ছবি এডিট করুন"
+                              >
+                                <Edit3 className="w-3.5 h-3.5 text-stone-950" />
+                                <span>লেখা ও ছবি এডিট</span>
+                              </button>
+                            )}
+
                             {isDeleted ? (
                               <button
                                 type="button"
@@ -1627,6 +1739,451 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
               </div>
             )}
 
+            {/* TAB: QUICK OFFERS & HERO OFFER CARDS MANAGEMENT */}
+            {activeTab === 'offers' && (
+              <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-stone-850 border border-stone-750 p-4 rounded-2xl">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-black text-white flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-amber-400" />
+                        <span>কুইক অফার ও ব্যানার ব্যবস্থাপনা ({quickOffers.length})</span>
+                      </h4>
+                    </div>
+                    <p className="text-xs text-stone-400 mt-1">
+                      হোম স্ক্রিনের ওপরের বিশেষ অফার কার্ড (যেমন: ৪টি রুটি ৩৫৳ বা কম্বো অফার) তৈরি, ছবি পরিবর্তন, মূল্য আপডেট ও মুছে ফেলা
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {onResetQuickOffers && (
+                      <button
+                        onClick={async () => {
+                          if (confirm('আপনি কি অফারগুলো ব্রোশিওরের মূল অফারে রিসেট করতে চান?')) {
+                            await onResetQuickOffers();
+                            showToast('🔄 অফারগুলো মূল ডিফল্টে রিসেট করা হয়েছে');
+                          }
+                        }}
+                        className="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-750 text-stone-300 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                        title="মূল অফারে রিসেট করুন"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5 text-stone-400" />
+                        <span>ডিফল্টে রিসেট</span>
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => {
+                        setOfferBeingEdited(null);
+                        setIsEditOfferModalOpen(true);
+                      }}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-stone-950 font-black text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4 text-stone-950" />
+                      <span>+ নতুন অফার যোগ করুন</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Offer cards list */}
+                {quickOffers.length === 0 ? (
+                  <div className="text-center py-12 bg-stone-850/50 rounded-2xl border border-stone-800 space-y-2">
+                    <Sparkles className="w-10 h-10 text-stone-600 mx-auto" />
+                    <p className="text-sm font-bold text-stone-400">বর্তমানে কোনো সক্রিয় কুইক অফার নেই</p>
+                    <p className="text-xs text-stone-500">"+ নতুন অফার যোগ করুন" বোতামে ক্লিক করে নতুন স্পেশাল অফার তৈরি করুন</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                    {quickOffers.map((offer) => (
+                      <div 
+                        key={offer.id} 
+                        className={`bg-stone-850 border rounded-2xl p-3.5 flex flex-col justify-between transition-all ${
+                          offer.isActive 
+                            ? 'border-stone-750 hover:border-amber-500/50' 
+                            : 'border-rose-950/60 bg-stone-900/80 opacity-70'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-stone-700 bg-black/40">
+                            <img 
+                              src={offer.imageUrl || '/images/pdf_bangla_ruti.png'} 
+                              alt={offer.titleBn} 
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/images/pdf_bangla_ruti.png';
+                              }}
+                            />
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5">
+                              <span className={`text-[9px] font-black px-1.5 py-0.2 rounded inline-block ${
+                                offer.badgeColor === 'emerald' ? 'bg-emerald-500 text-stone-950' :
+                                offer.badgeColor === 'orange' ? 'bg-orange-500 text-white' :
+                                offer.badgeColor === 'rose' ? 'bg-rose-500 text-white' :
+                                offer.badgeColor === 'sky' ? 'bg-sky-500 text-stone-950' :
+                                'bg-amber-500 text-stone-950'
+                              }`}>
+                                {offer.badgeBn || 'অফার'}
+                              </span>
+                              <span className="text-xs font-black text-amber-400">
+                                ৳{offer.price}
+                              </span>
+                              {offer.originalPrice && offer.originalPrice > offer.price && (
+                                <span className="text-[10px] text-stone-500 line-through">
+                                  ৳{offer.originalPrice}
+                                </span>
+                              )}
+                              {!offer.isActive && (
+                                <span className="text-[9px] bg-rose-600/30 text-rose-300 border border-rose-600/40 px-1.5 py-0.2 rounded font-bold">
+                                  লুকানো
+                                </span>
+                              )}
+                            </div>
+
+                            <h4 className="text-sm font-bold text-white mt-1">
+                              {offer.titleBn}
+                            </h4>
+                            {offer.subtitleBn && (
+                              <p className="text-xs text-stone-400 truncate mt-0.5">{offer.subtitleBn}</p>
+                            )}
+
+                            <div className="flex items-center gap-2 mt-2 text-[11px] text-stone-400">
+                              <span>অ্যাকশন: <strong className="text-stone-300">{offer.actionTextBn}</strong></span>
+                              {offer.targetItemId && (
+                                <span className="text-stone-500 font-mono text-[10px]">({offer.targetItemId})</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Card controls */}
+                        <div className="flex items-center justify-between pt-3 mt-3 border-t border-stone-800">
+                          <button
+                            onClick={() => {
+                              if (onToggleQuickOfferActive) {
+                                onToggleQuickOfferActive(offer.id, !offer.isActive);
+                                showToast(offer.isActive ? '👁️ অফারটি সাময়িক বন্ধ করা হয়েছে' : '✅ অফারটি হোম স্ক্রিনে সক্রিয় করা হয়েছে');
+                              }
+                            }}
+                            className="flex items-center gap-1 text-xs text-stone-400 hover:text-white cursor-pointer"
+                          >
+                            {offer.isActive ? (
+                              <>
+                                <Eye className="w-3.5 h-3.5 text-emerald-400" />
+                                <span className="text-emerald-400 font-bold">সক্রিয়</span>
+                              </>
+                            ) : (
+                              <>
+                                <EyeOff className="w-3.5 h-3.5 text-rose-400" />
+                                <span className="text-rose-400 font-bold">লুকানো</span>
+                              </>
+                            )}
+                          </button>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => {
+                                setOfferBeingEdited(offer);
+                                setIsEditOfferModalOpen(true);
+                              }}
+                              className="px-2.5 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-750 text-amber-300 border border-stone-700 font-bold text-xs flex items-center gap-1 cursor-pointer"
+                            >
+                              <Edit3 className="w-3.5 h-3.5 text-amber-400" />
+                              <span>এডিট</span>
+                            </button>
+
+                            {onDeleteQuickOffer && (
+                              <button
+                                onClick={async () => {
+                                  if (confirm(`আপনি কি "${offer.titleBn}" অফারটি চিরতরে মুছে ফেলতে চান?`)) {
+                                    await onDeleteQuickOffer(offer.id);
+                                    showToast('🗑️ অফারটি সফলভাবে মুছে ফেলা হয়েছে');
+                                  }
+                                }}
+                                className="px-2.5 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-bold text-xs flex items-center gap-1 cursor-pointer"
+                              >
+                                <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                                <span>মুছুন</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB: HEADER & LOGO CONFIGURATION */}
+            {activeTab === 'header' && (
+              <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 max-w-2xl">
+                <div className="bg-stone-850 border border-stone-750 rounded-2xl p-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-sm font-black text-white flex items-center gap-2">
+                        <Flame className="w-4 h-4 text-amber-400" />
+                        <span>হেডার ও লোগো কাস্টমাইজেশন</span>
+                      </h4>
+                      <p className="text-xs text-stone-400 mt-0.5">
+                        ওয়েবসাইট/অ্যাপের ওপরের হেডার বার, ব্র্যান্ড লোগো টেক্সট, স্লোগান ও আইকন পরিবর্তন
+                      </p>
+                    </div>
+
+                    {onResetHeaderConfig && (
+                      <button
+                        onClick={async () => {
+                          if (confirm('আপনি কি হেডার ও লোগো মূল ডিফল্টে রিসেট করতে চান?')) {
+                            await onResetHeaderConfig();
+                            setLocalHeaderConfig({
+                              logoTextBn: 'বাংলা রুটি',
+                              logoTagBn: 'BRN',
+                              logoIconType: 'flame',
+                              headerTaglineBn: 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস',
+                              showLocationPill: true,
+                              showWalletPill: true,
+                              showApkBtn: true
+                            });
+                            showToast('🔄 হেডার ও লোগো মূল ডিফল্টে ফিরে গেছে');
+                          }
+                        }}
+                        className="px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-750 text-stone-300 font-bold text-xs flex items-center gap-1 cursor-pointer"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5 text-stone-400" />
+                        <span>ডিফল্ট রিসেট</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Live Header Preview */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-stone-400">লাইভ হেডার প্রিভিউ:</label>
+                    <div className="bg-stone-900 border border-stone-750 rounded-2xl p-3 flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md overflow-hidden shrink-0">
+                          {localHeaderConfig.logoIconType === 'image' && localHeaderConfig.logoCustomImage ? (
+                            <img 
+                              src={localHeaderConfig.logoCustomImage} 
+                              alt="Logo" 
+                              className="w-full h-full object-cover" 
+                            />
+                          ) : (
+                            <Flame className="w-5 h-5 text-stone-950" />
+                          )}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-extrabold text-sm text-white tracking-tight">
+                              {localHeaderConfig.logoTextBn || 'বাংলা রুটি'}
+                            </span>
+                            {localHeaderConfig.logoTagBn && (
+                              <span className="text-[10px] font-black bg-amber-500/20 text-amber-400 px-1.5 py-0.2 rounded border border-amber-500/30">
+                                {localHeaderConfig.logoTagBn}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-1 text-[11px] text-stone-400">
+                            <MapPin className="w-3 h-3 text-amber-500" />
+                            <span>{localHeaderConfig.headerTaglineBn || 'মিরপুর ১১ ও ১২ • ১৫ মিনিট'}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        {localHeaderConfig.showHeaderAdminBtn && (
+                          <span className="text-[10px] font-black bg-amber-500 text-stone-950 px-2 py-1 rounded-xl">
+                            এডমিন
+                          </span>
+                        )}
+                        {localHeaderConfig.showHeaderImageBtn && (
+                          <span className="text-[10px] font-bold bg-amber-500/20 text-amber-300 px-2 py-1 rounded-xl border border-amber-500/30">
+                            ছবি
+                          </span>
+                        )}
+                        {localHeaderConfig.showWalletPill !== false && (
+                          <span className="text-[10px] font-black bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-xl border border-emerald-500/30">
+                            ৳৫০০
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Header Form Controls */}
+                  <div className="space-y-3 pt-2 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-stone-300 font-bold block mb-1">
+                          লোগো ব্র্যান্ড নাম (বাংলা)
+                        </label>
+                        <input
+                          type="text"
+                          value={localHeaderConfig.logoTextBn}
+                          onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, logoTextBn: e.target.value })}
+                          placeholder="যেমন: বাংলা রুটি"
+                          className="w-full bg-stone-900 border border-stone-750 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-stone-300 font-bold block mb-1">
+                          লোগো শর্ট ট্যাগ / ব্যাজ
+                        </label>
+                        <input
+                          type="text"
+                          value={localHeaderConfig.logoTagBn}
+                          onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, logoTagBn: e.target.value })}
+                          placeholder="যেমন: BRN"
+                          className="w-full bg-stone-900 border border-stone-750 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-stone-300 font-bold block mb-1">
+                        হেডার লোকেশন সাবটাইটেল / স্লোগান
+                      </label>
+                      <input
+                        type="text"
+                        value={localHeaderConfig.headerTaglineBn || ''}
+                        onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, headerTaglineBn: e.target.value })}
+                        placeholder="যেমন: মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস"
+                        className="w-full bg-stone-900 border border-stone-750 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+
+                    {/* Logo Icon Style Selection */}
+                    <div>
+                      <label className="text-stone-300 font-bold block mb-1">
+                        লোগো আইকন ধরণ
+                      </label>
+                      <div className="flex items-center gap-3">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="logoType"
+                            checked={localHeaderConfig.logoIconType !== 'image'}
+                            onChange={() => setLocalHeaderConfig({ ...localHeaderConfig, logoIconType: 'flame' })}
+                            className="accent-amber-500"
+                          />
+                          <span className="text-stone-200">অগ্নিশিখা (Flame আইকন)</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="logoType"
+                            checked={localHeaderConfig.logoIconType === 'image'}
+                            onChange={() => setLocalHeaderConfig({ ...localHeaderConfig, logoIconType: 'image' })}
+                            className="accent-amber-500"
+                          />
+                          <span className="text-stone-200">কাস্টম ইমেজ লোগো</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {localHeaderConfig.logoIconType === 'image' && (
+                      <div>
+                        <label className="text-stone-300 font-bold block mb-1">
+                          কাস্টম লোগো ইমেজ ইউআরএল বা আপলোড
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={localHeaderConfig.logoCustomImage || ''}
+                            onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, logoCustomImage: e.target.value })}
+                            placeholder="ছবির লিঙ্ক দিন বা আপলোড করুন"
+                            className="flex-1 bg-stone-900 border border-stone-750 rounded-xl px-3 py-2 text-white font-mono text-[11px] focus:outline-none focus:border-amber-400"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => triggerUploadFor('custom_logo_icon')}
+                            className="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-750 text-amber-400 border border-stone-700 font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <Camera className="w-3.5 h-3.5" />
+                            <span>আপলোড</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Visibility Toggles */}
+                    <div className="pt-2 border-t border-stone-800 space-y-2">
+                      <label className="text-stone-400 font-bold block text-[11px]">হেডারের বাটন দৃশ্যমানতা:</label>
+                      <div className="flex flex-wrap gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={localHeaderConfig.showLocationPill !== false}
+                            onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, showLocationPill: e.target.checked })}
+                            className="accent-amber-500 rounded"
+                          />
+                          <span className="text-stone-300">মিরপুর এরিয়া পিল</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={localHeaderConfig.showWalletPill !== false}
+                            onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, showWalletPill: e.target.checked })}
+                            className="accent-amber-500 rounded"
+                          />
+                          <span className="text-stone-300">ওয়ালেট ব্যালেন্স বাটন</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={localHeaderConfig.showApkBtn !== false}
+                            onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, showApkBtn: e.target.checked })}
+                            className="accent-amber-500 rounded"
+                          />
+                          <span className="text-stone-300">APK ডাউনলোড বাটন</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(localHeaderConfig.showHeaderAdminBtn)}
+                            onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, showHeaderAdminBtn: e.target.checked })}
+                            className="accent-amber-500 rounded"
+                          />
+                          <span className="text-stone-300">হেডারে এডমিন বাটন (Admin)</span>
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(localHeaderConfig.showHeaderImageBtn)}
+                            onChange={(e) => setLocalHeaderConfig({ ...localHeaderConfig, showHeaderImageBtn: e.target.checked })}
+                            className="accent-amber-500 rounded"
+                          />
+                          <span className="text-stone-300">হেডারে ছবি বাটন (Image)</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Save Button */}
+                    <div className="pt-3 border-t border-stone-800 flex justify-end">
+                      <button
+                        onClick={async () => {
+                          if (onUpdateHeaderConfig) {
+                            await onUpdateHeaderConfig(localHeaderConfig);
+                            showToast('✅ হেডার ও লোগো কনফিগারেশন সফলভাবে সেভ হয়েছে!');
+                          }
+                        }}
+                        className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-stone-950 font-black text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer"
+                      >
+                        <Save className="w-4 h-4 text-stone-950" />
+                        <span>হেডার পরিবর্তন সংরক্ষণ করুন</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* TAB 5: SETTINGS */}
             {activeTab === 'settings' && (
               <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 max-w-2xl">
@@ -1710,6 +2267,73 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
         itemToEdit={itemBeingEdited}
         onSave={handleSaveMenuItem}
         currentImage={itemBeingEdited ? (customImages[itemBeingEdited.id] || itemBeingEdited.image) : undefined}
+      />
+
+      {/* Sub-modal: Add or Edit Quick Offer */}
+      <EditOfferModal
+        isOpen={isEditOfferModalOpen}
+        onClose={() => {
+          setIsEditOfferModalOpen(false);
+          setOfferBeingEdited(null);
+        }}
+        offerToEdit={offerBeingEdited}
+        menuItems={baseMenuItemsList}
+        onSave={async (savedOffer) => {
+          if (offerBeingEdited) {
+            if (onUpdateQuickOffer) {
+              await onUpdateQuickOffer(savedOffer);
+              showToast(`✅ "${savedOffer.titleBn}" অফারটি সফলভাবে আপডেট করা হয়েছে!`);
+            }
+          } else {
+            if (onAddQuickOffer) {
+              await onAddQuickOffer(savedOffer);
+              showToast(`✅ নতুন অফার "${savedOffer.titleBn}" যুক্ত করা হয়েছে!`);
+            }
+          }
+          setIsEditOfferModalOpen(false);
+          setOfferBeingEdited(null);
+        }}
+      />
+
+      {/* Sub-modal: Edit Hero Banner Section */}
+      <EditHeroBannerModal
+        isOpen={isEditHeroModalOpen}
+        onClose={() => setIsEditHeroModalOpen(false)}
+        bannerConfig={heroBannerConfig || {
+          pillTextBn: 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস',
+          ctaButtonTextBn: 'বিস্তারিত দেখুন',
+          headingLine1Bn: 'তাওয়া থেকে তাজা গরম রুটি',
+          headingLine2HighlightBn: '১৫ মিনিটে',
+          headingLine2SuffixBn: 'আপনার দরজায়!',
+          mottoBn: `${BRN_BRAND_INFO.mottoBn} — সকাল-সন্ধ্যার ঝামেলাহীন স্বস্তিতে স্বাগতম।`,
+          footerFeatureBn: 'স্বয়ংক্রিয় মেশিনে তৈরি ও ১০০% হাইজেনিক',
+          footerDistanceBn: 'সর্বোচ্চ ২ কিমি',
+          imageUrl: BRN_BRAND_INFO.images.heroCombo,
+          isVisible: !deletedSections.includes('kitchen_dispatch_info')
+        }}
+        onSave={async (savedHero) => {
+          if (onUpdateHeroBannerConfig) {
+            await onUpdateHeroBannerConfig(savedHero);
+            showToast('✅ হেডারের নিচের ব্যানার (Hero Section) সফলভাবে আপডেট করা হয়েছে!');
+          }
+          if (savedHero.isVisible === false && !deletedSections.includes('kitchen_dispatch_info') && onToggleSection) {
+            await onToggleSection('kitchen_dispatch_info', true);
+          } else if (savedHero.isVisible !== false && deletedSections.includes('kitchen_dispatch_info') && onToggleSection) {
+            await onToggleSection('kitchen_dispatch_info', false);
+          }
+        }}
+        onDeleteSection={async () => {
+          if (onToggleSection) {
+            await onToggleSection('kitchen_dispatch_info', true);
+            showToast('🗑️ হেডারের নিচের ব্যানার সেকশনটি ডিলিট (হাইড) করা হয়েছে');
+          }
+        }}
+        onResetDefault={async () => {
+          if (onResetHeroBannerConfig) {
+            await onResetHeroBannerConfig();
+            showToast('🔄 ব্যানার ডিফল্ট অবস্থায় রিস্টোর করা হয়েছে');
+          }
+        }}
       />
     </div>
   );

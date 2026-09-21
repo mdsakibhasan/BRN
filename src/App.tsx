@@ -34,7 +34,10 @@ import {
   MirpurLocation, 
   WalletTransaction, 
   Order, 
-  Language 
+  Language,
+  HeaderConfig,
+  HeroBannerConfig,
+  QuickOfferItem
 } from './types';
 import { MENU_ITEMS, MIRPUR_LOCATIONS, BRN_KITCHEN_LOCATION, BRN_BRAND_INFO } from './data/menu';
 
@@ -173,6 +176,96 @@ export default function App() {
     return {};
   });
 
+  // Default Quick Offers from Brochure
+  const DEFAULT_QUICK_OFFERS: QuickOfferItem[] = [
+    {
+      id: 'offer-bangla-ruti-4pack',
+      titleBn: '৪টি রুটি ৩৫৳',
+      badgeBn: 'অফার',
+      badgeColor: 'amber',
+      price: 35,
+      originalPrice: 40,
+      actionTextBn: '+ ১-ট্যাপে যোগ',
+      targetItemId: 'ruti-regular',
+      imageUrl: '/images/pdf_bangla_ruti.png',
+      isActive: true,
+      subtitleBn: 'তাজা গরম বাংলা রুটি'
+    },
+    {
+      id: 'offer-roti-dal-combo',
+      titleBn: 'রুটি + ডাল ৬০৳',
+      badgeBn: 'কম্বো',
+      badgeColor: 'emerald',
+      price: 60,
+      originalPrice: 70,
+      actionTextBn: '+ ১-ট্যাপে যোগ',
+      targetItemId: 'combo-breakfast',
+      imageUrl: BRN_BRAND_INFO.images.heroCombo,
+      isActive: true,
+      subtitleBn: 'ব্রেকফাস্ট সুপার কম্বো'
+    }
+  ];
+
+  // Quick Offers State (Cloud synced with Firestore)
+  const [quickOffers, setQuickOffers] = useState<QuickOfferItem[]>(() => {
+    const saved = localStorage.getItem('brn_quick_offers');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return DEFAULT_QUICK_OFFERS;
+      }
+    }
+    return DEFAULT_QUICK_OFFERS;
+  });
+
+  // Header and Logo Configuration State (Cloud synced with Firestore)
+  const [headerConfig, setHeaderConfig] = useState<HeaderConfig>(() => {
+    const saved = localStorage.getItem('brn_header_config');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // fallback
+      }
+    }
+    return {
+      logoTextBn: 'বাংলা রুটি',
+      logoTagBn: 'BRN',
+      logoIconType: 'flame',
+      headerTaglineBn: 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস',
+      showLocationPill: true,
+      showWalletPill: true,
+      showApkBtn: true,
+      showHeaderAdminBtn: false,
+      showHeaderImageBtn: false
+    };
+  });
+
+  // Hero Banner Configuration State (Cloud synced with Firestore)
+  const [heroBannerConfig, setHeroBannerConfig] = useState<HeroBannerConfig>(() => {
+    const saved = localStorage.getItem('brn_hero_banner_config');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // fallback
+      }
+    }
+    return {
+      pillTextBn: 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস',
+      ctaButtonTextBn: 'বিস্তারিত দেখুন',
+      headingLine1Bn: 'তাওয়া থেকে তাজা গরম রুটি',
+      headingLine2HighlightBn: '১৫ মিনিটে',
+      headingLine2SuffixBn: 'আপনার দরজায়!',
+      mottoBn: `${BRN_BRAND_INFO.mottoBn} — সকাল-সন্ধ্যার ঝামেলাহীন স্বস্তিতে স্বাগতম।`,
+      footerFeatureBn: 'স্বয়ংক্রিয় মেশিনে তৈরি ও ১০০% হাইজেনিক',
+      footerDistanceBn: 'সর্বোচ্চ ২ কিমি',
+      imageUrl: BRN_BRAND_INFO.images.heroCombo,
+      isVisible: true
+    };
+  });
+
   // Sync deleted sections from Firestore cloud config in real-time
   useEffect(() => {
     try {
@@ -276,6 +369,81 @@ export default function App() {
       return () => unsub();
     } catch (err) {
       console.warn('Realtime orders listener note:', err);
+    }
+  }, []);
+
+  // Sync quick offers from Firestore cloud config in real-time
+  useEffect(() => {
+    try {
+      const unsub = onSnapshot(doc(db, 'app_config', 'offers_config'), (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data && data.offers) {
+            try {
+              const cloudOffers = typeof data.offers === 'string' ? JSON.parse(data.offers) : data.offers;
+              if (Array.isArray(cloudOffers) && cloudOffers.length > 0) {
+                setQuickOffers(cloudOffers);
+                localStorage.setItem('brn_quick_offers', JSON.stringify(cloudOffers));
+              }
+            } catch (err) {
+              console.warn('Could not parse cloud offers:', err);
+            }
+          }
+        }
+      });
+      return () => unsub();
+    } catch (err) {
+      console.warn('Realtime cloud offers listener note:', err);
+    }
+  }, []);
+
+  // Sync header and logo configuration from Firestore cloud config in real-time
+  useEffect(() => {
+    try {
+      const unsub = onSnapshot(doc(db, 'app_config', 'header_config'), (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data && data.config) {
+            try {
+              const cloudHeader = typeof data.config === 'string' ? JSON.parse(data.config) : data.config;
+              if (cloudHeader && typeof cloudHeader === 'object') {
+                setHeaderConfig(cloudHeader);
+                localStorage.setItem('brn_header_config', JSON.stringify(cloudHeader));
+              }
+            } catch (err) {
+              console.warn('Could not parse cloud header config:', err);
+            }
+          }
+        }
+      });
+      return () => unsub();
+    } catch (err) {
+      console.warn('Realtime cloud header config listener note:', err);
+    }
+  }, []);
+
+  // Sync hero banner configuration from Firestore cloud config in real-time
+  useEffect(() => {
+    try {
+      const unsub = onSnapshot(doc(db, 'app_config', 'hero_banner_config'), (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data && data.config) {
+            try {
+              const cloudHero = typeof data.config === 'string' ? JSON.parse(data.config) : data.config;
+              if (cloudHero && typeof cloudHero === 'object') {
+                setHeroBannerConfig(cloudHero);
+                localStorage.setItem('brn_hero_banner_config', JSON.stringify(cloudHero));
+              }
+            } catch (err) {
+              console.warn('Could not parse cloud hero banner config:', err);
+            }
+          }
+        }
+      });
+      return () => unsub();
+    } catch (err) {
+      console.warn('Realtime cloud hero banner config listener note:', err);
     }
   }, []);
 
@@ -467,6 +635,134 @@ export default function App() {
     setModifiedMenuItems(updatedModified);
     localStorage.setItem('brn_modified_items', JSON.stringify(updatedModified));
     await saveMenuItemsConfig(deletedMenuItems, customMenuItems, updatedModified);
+  };
+
+  // Quick Offers Persistence and Handlers
+  const saveQuickOffersConfig = async (offers: QuickOfferItem[]) => {
+    try {
+      await setDoc(doc(db, 'app_config', 'offers_config'), {
+        offers: JSON.stringify(offers),
+        updatedAt: new Date().toISOString(),
+        updatedBy: 'md.shakhaoathossain@gmail.com'
+      }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore offers config save error:', err);
+    }
+  };
+
+  const handleAddQuickOffer = async (newOffer: QuickOfferItem) => {
+    const updated = [newOffer, ...quickOffers];
+    setQuickOffers(updated);
+    localStorage.setItem('brn_quick_offers', JSON.stringify(updated));
+    await saveQuickOffersConfig(updated);
+  };
+
+  const handleUpdateQuickOffer = async (updatedOffer: QuickOfferItem) => {
+    const updated = quickOffers.map((o) => (o.id === updatedOffer.id ? updatedOffer : o));
+    setQuickOffers(updated);
+    localStorage.setItem('brn_quick_offers', JSON.stringify(updated));
+    await saveQuickOffersConfig(updated);
+  };
+
+  const handleDeleteQuickOffer = async (offerId: string) => {
+    const updated = quickOffers.filter((o) => o.id !== offerId);
+    setQuickOffers(updated);
+    localStorage.setItem('brn_quick_offers', JSON.stringify(updated));
+    await saveQuickOffersConfig(updated);
+  };
+
+  const handleToggleQuickOfferActive = async (offerId: string, isActive: boolean) => {
+    const updated = quickOffers.map((o) => (o.id === offerId ? { ...o, isActive } : o));
+    setQuickOffers(updated);
+    localStorage.setItem('brn_quick_offers', JSON.stringify(updated));
+    await saveQuickOffersConfig(updated);
+  };
+
+  const handleResetQuickOffers = async () => {
+    setQuickOffers(DEFAULT_QUICK_OFFERS);
+    localStorage.setItem('brn_quick_offers', JSON.stringify(DEFAULT_QUICK_OFFERS));
+    await saveQuickOffersConfig(DEFAULT_QUICK_OFFERS);
+  };
+
+  // Header & Logo Persistence and Handlers
+  const handleUpdateHeaderConfig = async (newConfig: HeaderConfig) => {
+    setHeaderConfig(newConfig);
+    localStorage.setItem('brn_header_config', JSON.stringify(newConfig));
+    try {
+      await setDoc(doc(db, 'app_config', 'header_config'), {
+        config: JSON.stringify(newConfig),
+        updatedAt: new Date().toISOString(),
+        updatedBy: 'md.shakhaoathossain@gmail.com'
+      }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore header config save error:', err);
+    }
+  };
+
+  const handleResetHeaderConfig = async () => {
+    const defaultConfig: HeaderConfig = {
+      logoTextBn: 'বাংলা রুটি',
+      logoTagBn: 'BRN',
+      logoIconType: 'flame',
+      headerTaglineBn: 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস',
+      showLocationPill: true,
+      showWalletPill: true,
+      showApkBtn: true,
+      showHeaderAdminBtn: false,
+      showHeaderImageBtn: false
+    };
+    setHeaderConfig(defaultConfig);
+    localStorage.setItem('brn_header_config', JSON.stringify(defaultConfig));
+    try {
+      await setDoc(doc(db, 'app_config', 'header_config'), {
+        config: JSON.stringify(defaultConfig),
+        updatedAt: new Date().toISOString(),
+        updatedBy: 'md.shakhaoathossain@gmail.com'
+      }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore header config reset error:', err);
+    }
+  };
+
+  // Hero Banner Persistence and Handlers
+  const handleUpdateHeroBannerConfig = async (newConfig: HeroBannerConfig) => {
+    setHeroBannerConfig(newConfig);
+    localStorage.setItem('brn_hero_banner_config', JSON.stringify(newConfig));
+    try {
+      await setDoc(doc(db, 'app_config', 'hero_banner_config'), {
+        config: JSON.stringify(newConfig),
+        updatedAt: new Date().toISOString(),
+        updatedBy: 'md.shakhaoathossain@gmail.com'
+      }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore hero banner config save error:', err);
+    }
+  };
+
+  const handleResetHeroBannerConfig = async () => {
+    const defaultConfig: HeroBannerConfig = {
+      pillTextBn: 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস',
+      ctaButtonTextBn: 'বিস্তারিত দেখুন',
+      headingLine1Bn: 'তাওয়া থেকে তাজা গরম রুটি',
+      headingLine2HighlightBn: '১৫ মিনিটে',
+      headingLine2SuffixBn: 'আপনার দরজায়!',
+      mottoBn: `${BRN_BRAND_INFO.mottoBn} — সকাল-সন্ধ্যার ঝামেলাহীন স্বস্তিতে স্বাগতম।`,
+      footerFeatureBn: 'স্বয়ংক্রিয় মেশিনে তৈরি ও ১০০% হাইজেনিক',
+      footerDistanceBn: 'সর্বোচ্চ ২ কিমি',
+      imageUrl: BRN_BRAND_INFO.images.heroCombo,
+      isVisible: true
+    };
+    setHeroBannerConfig(defaultConfig);
+    localStorage.setItem('brn_hero_banner_config', JSON.stringify(defaultConfig));
+    try {
+      await setDoc(doc(db, 'app_config', 'hero_banner_config'), {
+        config: JSON.stringify(defaultConfig),
+        updatedAt: new Date().toISOString(),
+        updatedBy: 'md.shakhaoathossain@gmail.com'
+      }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore hero banner config reset error:', err);
+    }
   };
 
   const handleOpenImageUploader = (targetKey?: string) => {
@@ -690,52 +986,72 @@ export default function App() {
         
         {/* iOS App Top Bar */}
         <header className="sticky top-0 z-30 bg-stone-900/95 backdrop-blur-md px-4 py-3 border-b border-stone-800 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md">
-              <Flame className="w-5 h-5 text-stone-950" />
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/20 overflow-hidden shrink-0 aspect-square border border-amber-400/40">
+              {headerConfig.logoIconType === 'image' && headerConfig.logoCustomImage ? (
+                <img 
+                  src={headerConfig.logoCustomImage} 
+                  alt="BRN Logo" 
+                  className="w-full h-full object-cover aspect-square"
+                />
+              ) : (
+                <Flame className="w-6 h-6 text-stone-950" />
+              )}
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h1 className="font-extrabold text-sm text-white tracking-tight">বাংলা রুটি</h1>
-                <span className="text-[10px] font-black bg-amber-500/20 text-amber-400 px-1.5 py-0.2 rounded border border-amber-500/30">
-                  BRN
-                </span>
+                <h1 className="font-extrabold text-base text-white tracking-tight leading-tight">
+                  {headerConfig.logoTextBn || 'বাংলা রুটি'}
+                </h1>
+                {headerConfig.logoTagBn && (
+                  <span className="text-[10px] font-black bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30">
+                    {headerConfig.logoTagBn}
+                  </span>
+                )}
               </div>
-              <button 
-                onClick={() => setIsLocationSelectorOpen(true)}
-                className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-amber-400 transition-colors cursor-pointer"
-              >
-                <MapPin className="w-3 h-3 text-amber-500" />
-                <span className="font-semibold">{selectedLocation.nameBn.split(',')[0]}</span>
-                <span className="text-[10px] text-amber-400 bg-amber-950/60 px-1 rounded">২ কিমি</span>
-              </button>
+              {headerConfig.showLocationPill !== false && (
+                <button 
+                  onClick={() => setIsLocationSelectorOpen(true)}
+                  className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-amber-400 transition-colors cursor-pointer mt-0.5"
+                >
+                  <MapPin className="w-3 h-3 text-amber-500" />
+                  <span className="font-semibold">
+                    {headerConfig.headerTaglineBn ? headerConfig.headerTaglineBn.split('•')[0].trim() : selectedLocation.nameBn.split(',')[0]}
+                  </span>
+                  <span className="text-[10px] text-amber-400 bg-amber-950/60 px-1 rounded">২ কিমি</span>
+                </button>
+              )}
             </div>
           </div>
 
           <div className="flex items-center gap-1.5">
-            {/* Admin Panel Button */}
-            <button
-              id="topbar-admin-panel-btn"
-              onClick={() => handleOpenAdminPanel()}
-              className="flex items-center gap-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 px-2 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer shadow-sm shadow-amber-500/20"
-              title="এডমিন প্যানেল (ছবি আপলোড ও লাইভ অপারেশন)"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-stone-950" />
-              <span className="text-[11px] font-black">এডমিন</span>
-            </button>
+            {/* Admin Panel Button (Hidden from header by user request, toggleable in admin) */}
+            {headerConfig.showHeaderAdminBtn && (
+              <button
+                id="topbar-admin-panel-btn"
+                onClick={() => handleOpenAdminPanel()}
+                className="flex items-center gap-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 px-2 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer shadow-sm shadow-amber-500/20"
+                title="এডমিন প্যানেল"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-stone-950" />
+                <span className="text-[11px] font-black">এডমিন</span>
+              </button>
+            )}
 
-            {/* PDF Image Manager */}
-            <button
-              onClick={() => handleOpenAdminPanel()}
-              className="flex items-center gap-1 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 px-2 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
-              title="PDF ব্রোশিওরের আসল ছবি আপলোড ও পরিবর্তন"
-            >
-              <Camera className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-[11px] font-black">ছবি</span>
-            </button>
+            {/* PDF Image Manager (Hidden from header by user request, toggleable in admin) */}
+            {headerConfig.showHeaderImageBtn && (
+              <button
+                onClick={() => handleOpenAdminPanel()}
+                className="flex items-center gap-1 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 px-2 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                title="ছবি আপলোড ও পরিবর্তন"
+              >
+                <Camera className="w-3.5 h-3.5 text-amber-400" />
+                <span className="text-[11px] font-black">ছবি</span>
+              </button>
+            )}
 
             {/* Android APK Button */}
-            {!deletedSections.includes('apk_download_banner') && (
+            {!deletedSections.includes('apk_download_banner') && headerConfig.showApkBtn !== false && (
               <button
                 onClick={() => setIsAndroidModalOpen(true)}
                 className="flex items-center gap-1 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 px-2 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
@@ -747,22 +1063,24 @@ export default function App() {
             )}
 
             {/* Wallet Balance Pill */}
-            <button
-              onClick={() => {
-                setActiveTab('wallet');
-              }}
-              className="flex items-center gap-1.5 bg-stone-800/90 hover:bg-stone-750 px-2.5 py-1.5 rounded-xl border border-stone-700 transition-all cursor-pointer"
-            >
-              <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-black">
-                ৳
-              </div>
-              <div className="text-left">
-                <span className="text-xs font-black text-emerald-400">৳{walletBalance}</span>
-              </div>
-              <div className="w-4 h-4 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center font-black text-[11px]">
-                +
-              </div>
-            </button>
+            {headerConfig.showWalletPill !== false && (
+              <button
+                onClick={() => {
+                  setActiveTab('wallet');
+                }}
+                className="flex items-center gap-1.5 bg-stone-800/90 hover:bg-stone-750 px-2.5 py-1.5 rounded-xl border border-stone-700 transition-all cursor-pointer"
+              >
+                <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-black">
+                  ৳
+                </div>
+                <div className="text-left">
+                  <span className="text-xs font-black text-emerald-400">৳{walletBalance}</span>
+                </div>
+                <div className="w-4 h-4 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center font-black text-[11px]">
+                  +
+                </div>
+              </button>
+            )}
           </div>
         </header>
 
@@ -798,12 +1116,12 @@ export default function App() {
         {/* TAB 1: MENU / HOME */}
         {activeTab === 'menu' && (
           <div className="p-3 space-y-4">
-            {/* Express Delivery & Brochure Hero */}
-            {!deletedSections.includes('kitchen_dispatch_info') && (
+            {/* Express Delivery & Brochure Hero (Dynamic from Admin / Cloud) */}
+            {!deletedSections.includes('kitchen_dispatch_info') && heroBannerConfig.isVisible !== false && (
               <div className="bg-gradient-to-br from-amber-600/90 via-orange-600/90 to-stone-900 rounded-3xl text-white shadow-xl relative overflow-hidden border border-amber-500/30">
                 <div className="relative h-44 w-full overflow-hidden">
                   <img 
-                    src={BRN_BRAND_INFO.images.heroCombo} 
+                    src={heroBannerConfig.imageUrl || BRN_BRAND_INFO.images.heroCombo} 
                     alt="Hot Roti & Dal" 
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover opacity-45"
@@ -813,24 +1131,24 @@ export default function App() {
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
                     <span className="text-[10px] font-black uppercase tracking-wider bg-stone-950/70 backdrop-blur-md text-amber-300 px-2.5 py-0.5 rounded-full flex items-center gap-1 border border-amber-400/30">
                       <Clock className="w-3 h-3 text-amber-400" />
-                      মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস
+                      {heroBannerConfig.pillTextBn || 'মিরপুর ১১ ও ১২ • ১৫ মিনিট এক্সপ্রেস'}
                     </span>
                     <button 
                       onClick={() => setActiveTab('services')}
                       className="text-[10px] font-bold bg-amber-500 text-stone-950 px-2 py-0.5 rounded-full flex items-center gap-0.5 hover:bg-amber-400 transition-colors shadow-sm cursor-pointer"
                     >
-                      <span>আমাদের ব্রোশিওর</span>
+                      <span>{heroBannerConfig.ctaButtonTextBn || 'আমাদের ব্রোশিওর'}</span>
                       <ChevronRight className="w-3 h-3" />
                     </button>
                   </div>
 
                   <div className="absolute bottom-3 left-3.5 right-3.5">
                     <h2 className="text-lg font-black leading-tight text-white">
-                      তাওয়া থেকে তাজা গরম রুটি <br />
-                      <span className="text-amber-300">১৫ মিনিটে</span> আপনার দরজায়!
+                      {heroBannerConfig.headingLine1Bn || 'তাওয়া থেকে তাজা গরম রুটি'} <br />
+                      <span className="text-amber-300">{heroBannerConfig.headingLine2HighlightBn || '১৫ মিনিটে'}</span> {heroBannerConfig.headingLine2SuffixBn || 'আপনার দরজায়!'}
                     </h2>
                     <p className="text-xs text-stone-200 mt-1 line-clamp-2">
-                      {BRN_BRAND_INFO.mottoBn} — সকাল-সন্ধ্যার ঝামেলাহীন স্বস্তিতে স্বাগতম।
+                      {heroBannerConfig.mottoBn || `${BRN_BRAND_INFO.mottoBn} — সকাল-সন্ধ্যার ঝামেলাহীন স্বস্তিতে স্বাগতম।`}
                     </p>
                   </div>
                 </div>
@@ -838,65 +1156,76 @@ export default function App() {
                 <div className="p-3 bg-stone-950/80 border-t border-stone-800 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-1.5 text-stone-300">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span className="text-[11px]">স্বয়ংক্রিয় মেশিনে তৈরি ও ১০০% হাইজেনিক</span>
+                    <span className="text-[11px]">{heroBannerConfig.footerFeatureBn || 'স্বয়ংক্রিয় মেশিনে তৈরি ও ১০০% হাইজেনিক'}</span>
                   </div>
-                  <span className="text-[11px] font-bold text-amber-400">সর্বোচ্চ ২ কিমি</span>
+                  <span className="text-[11px] font-bold text-amber-400">{heroBannerConfig.footerDistanceBn || 'সর্বোচ্চ ২ কিমি'}</span>
                 </div>
               </div>
             )}
 
-            {/* Signature Brochure Quick Offers */}
-            {!deletedSections.includes('quick_offers') && (
+            {/* Signature Brochure Quick Offers (Dynamic from Admin / Cloud) */}
+            {!deletedSections.includes('quick_offers') && quickOffers.filter(o => o.isActive).length > 0 && (
               <div className="grid grid-cols-2 gap-2">
-                {/* Offer 1: 4 Bangla Roti for 35 Tk */}
-                <div 
-                  onClick={() => {
-                    const rutiItem = MENU_ITEMS.find(i => i.id === 'ruti-regular');
-                    if (rutiItem) handleAddToCart(rutiItem);
-                  }}
-                  className="bg-stone-850 hover:bg-stone-800 border border-amber-500/30 hover:border-amber-400 rounded-2xl p-2.5 cursor-pointer transition-all flex items-center gap-2 shadow-sm group"
-                >
-                  <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-stone-700">
-                    <img 
-                      src={customImages['bangla-ruti-4pack'] || '/images/pdf_bangla_ruti.png'} 
-                      alt="Bangla Roti" 
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <span className="text-[9px] font-black bg-amber-500 text-stone-950 px-1.5 py-0.2 rounded inline-block">
-                      অফার
-                    </span>
-                    <h4 className="text-xs font-bold text-white truncate mt-0.5">৪টি রুটি ৩৫৳</h4>
-                    <span className="text-[10px] text-amber-400 font-bold block">+ ১-ট্যাপে যোগ</span>
-                  </div>
-                </div>
+                {quickOffers.filter(o => o.isActive).map((offer) => {
+                  const offerImg = customImages[offer.id] || offer.imageUrl || '/images/pdf_bangla_ruti.png';
+                  
+                  const badgeColorClass = 
+                    offer.badgeColor === 'emerald' ? 'bg-emerald-500 text-stone-950' :
+                    offer.badgeColor === 'orange' ? 'bg-orange-500 text-white' :
+                    offer.badgeColor === 'rose' ? 'bg-rose-500 text-white' :
+                    offer.badgeColor === 'sky' ? 'bg-sky-500 text-stone-950' :
+                    'bg-amber-500 text-stone-950';
 
-                {/* Offer 2: Roti + Dal Combo */}
-                <div 
-                  onClick={() => {
-                    const comboItem = MENU_ITEMS.find(i => i.id === 'combo-breakfast');
-                    if (comboItem) handleAddToCart(comboItem);
-                  }}
-                  className="bg-stone-850 hover:bg-stone-800 border border-emerald-500/30 hover:border-emerald-400 rounded-2xl p-2.5 cursor-pointer transition-all flex items-center gap-2 shadow-sm group"
-                >
-                  <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-stone-700">
-                    <img 
-                      src={BRN_BRAND_INFO.images.heroCombo} 
-                      alt="Roti Dal Combo" 
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <span className="text-[9px] font-black bg-emerald-500 text-stone-950 px-1.5 py-0.2 rounded inline-block">
-                      কম্বো
-                    </span>
-                    <h4 className="text-xs font-bold text-white truncate mt-0.5">রুটি + ডাল ৬০৳</h4>
-                    <span className="text-[10px] text-emerald-400 font-bold block">+ ১-ট্যাপে যোগ</span>
-                  </div>
-                </div>
+                  const borderColorClass = 
+                    offer.badgeColor === 'emerald' ? 'border-emerald-500/30 hover:border-emerald-400' :
+                    offer.badgeColor === 'orange' ? 'border-orange-500/30 hover:border-orange-400' :
+                    offer.badgeColor === 'rose' ? 'border-rose-500/30 hover:border-rose-400' :
+                    'border-amber-500/30 hover:border-amber-400';
+
+                  return (
+                    <div 
+                      key={offer.id}
+                      onClick={() => {
+                        // Find targeted item or fallback
+                        const target = allMenuItems.find(i => i.id === offer.targetItemId) || 
+                                     allMenuItems.find(i => i.price === offer.price) || 
+                                     allMenuItems[0];
+                        if (target) {
+                          handleAddToCart(target);
+                        }
+                      }}
+                      className={`bg-stone-850 hover:bg-stone-800 border ${borderColorClass} rounded-2xl p-2.5 cursor-pointer transition-all flex items-center gap-2 shadow-sm group`}
+                    >
+                      <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-stone-700 bg-stone-900">
+                        <img 
+                          src={offerImg} 
+                          alt={offer.titleBn} 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/images/pdf_bangla_ruti.png';
+                          }}
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1">
+                          <span className={`text-[9px] font-black ${badgeColorClass} px-1.5 py-0.2 rounded inline-block`}>
+                            {offer.badgeBn || 'অফার'}
+                          </span>
+                          {offer.originalPrice && offer.originalPrice > offer.price && (
+                            <span className="text-[9px] text-stone-500 line-through">
+                              ৳{offer.originalPrice}
+                            </span>
+                          )}
+                        </div>
+                        <h4 className="text-xs font-bold text-white truncate mt-0.5">{offer.titleBn}</h4>
+                        <span className="text-[10px] text-amber-400 font-bold block">
+                          {offer.actionTextBn || '+ ১-ট্যাপে যোগ'}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
 
@@ -1666,6 +1995,18 @@ export default function App() {
           onUpdateMenuItem={handleUpdateMenuItem}
           onDeleteCustomMenuItem={handleDeleteCustomMenuItem}
           onResetModifiedItem={handleResetModifiedItem}
+          headerConfig={headerConfig}
+          onUpdateHeaderConfig={handleUpdateHeaderConfig}
+          onResetHeaderConfig={handleResetHeaderConfig}
+          quickOffers={quickOffers}
+          onAddQuickOffer={handleAddQuickOffer}
+          onUpdateQuickOffer={handleUpdateQuickOffer}
+          onDeleteQuickOffer={handleDeleteQuickOffer}
+          onToggleQuickOfferActive={handleToggleQuickOfferActive}
+          onResetQuickOffers={handleResetQuickOffers}
+          heroBannerConfig={heroBannerConfig}
+          onUpdateHeroBannerConfig={handleUpdateHeroBannerConfig}
+          onResetHeroBannerConfig={handleResetHeroBannerConfig}
         />
 
       </div>
